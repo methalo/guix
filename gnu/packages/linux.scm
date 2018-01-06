@@ -72,6 +72,7 @@
   #:use-module (gnu packages gnuzilla)
   #:use-module (gnu packages gperf)
   #:use-module (gnu packages gtk)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages libunwind)
   #:use-module (gnu packages libusb)
   #:use-module (gnu packages man)
@@ -538,7 +539,11 @@ providing the system administrator with some help in common tasks.")
     (outputs '("out"
                "static"))      ; >2 MiB of static .a libraries
     (arguments
-     `(#:configure-flags (list "--disable-use-tty-group"
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags (list "--disable-use-tty-group"
                                "--enable-fs-paths-default=/run/current-system/profile/sbin"
                                ;; Install completions where our
                                ;; bash-completion package expects them.
