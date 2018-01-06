@@ -117,6 +117,7 @@
             local-host-aliases
             %setuid-programs
             %base-packages
+            %base-packages-hurd
             %base-firmware))
 
 ;;; Commentary:
@@ -531,6 +532,34 @@ explicitly appear in OS."
          kmod eudev
 
          e2fsprogs kbd
+
+         bash-completion
+
+         ;; XXX: We don't use (canonical-package guile-2.2) here because that
+         ;; would create a collision in the global profile between the GMP
+         ;; variant propagated by 'guile-final' and the GMP variant propagated
+         ;; by 'gnutls', itself propagated by 'guix'.
+         guile-2.2
+
+         ;; The packages below are also in %FINAL-INPUTS, so take them from
+         ;; there to avoid duplication.
+         (map canonical-package
+              (list bash coreutils findutils grep sed
+                    diffutils patch gawk tar gzip bzip2 xz lzip))))
+
+(define %base-packages-hurd
+  ;; Default set of packages globally visible.  It should include anything
+  ;; required for basic administrator tasks.
+  (cons* procps psmisc which less zile nano
+         (@ (gnu packages admin) shadow)          ;for 'passwd'
+
+         man-db
+         info-reader                     ;the standalone Info reader (no Perl)
+
+         ;; The 'sudo' command is already in %SETUID-PROGRAMS, but we also
+         ;; want the other commands and the man pages (notably because
+         ;; auto-completion in Emacs shell relies on man pages.)
+         sudo
 
          bash-completion
 
