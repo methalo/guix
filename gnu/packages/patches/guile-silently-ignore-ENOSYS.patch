@@ -1,0 +1,33 @@
+From: Manolis Ragkousis
+
+madvise() is not implemented on Hurd.
+See <https://lists.gnu.org/archive/html/guile-devel/2017-06/msg00001.html>.
+
+* libguile/vm.c (return_unused_stack_to_os): Ignore madvise() related
+  ENOSYS on Hurd.
+---
+ libguile/vm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/libguile/vm.c b/libguile/vm.c
+index 18f219249..21d89fd2a 100644
+--- a/libguile/vm.c
++++ b/libguile/vm.c
+@@ -904,8 +904,14 @@ return_unused_stack_to_os (struct scm_vm *vp)
+         ret = madvise ((void *) lo, hi - lo, MADV_DONTNEED);
+       while (ret && errno == -EAGAIN);
+ 
++#if defined __gnu_hurd__
++      /* On Hurd ignore ENOSYS, madvise is not supported.*/
++      if (ret && errno != ENOSYS)
++        perror ("madvise failed");
++#else   
+       if (ret)
+         perror ("madvise failed");
++#endif      
+     }
+ 
+   vp->sp_min_since_gc = vp->sp;
+-- 
+2.14.1
+

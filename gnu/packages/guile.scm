@@ -42,6 +42,7 @@
   #:use-module (gnu packages compression)
   #:use-module (gnu packages gawk)
   #:use-module (gnu packages gperf)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages flex)
@@ -198,7 +199,11 @@ without requiring the source code to be rewritten.")
                                    (string-append bash "/bin/bash")
                                    "bash"))
                              '((string-append bash "/bin/bash")))))))
-                %standard-phases)))
+                %standard-phases)
+       ,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())))
 
    (native-search-paths
     (list (search-path-specification
@@ -233,6 +238,7 @@ without requiring the source code to be rewritten.")
               (sha256
                (base32
                 "1azm25zcmxif0skxfrp11d2wc89nrzpjaann9yxdw6pvjxhs948w"))
+              (patches (search-patches "guile-silently-ignore-ENOSYS.patch"))
               (modules '((guix build utils)))
 
               ;; Remove the pre-built object files.  Instead, build everything
@@ -243,6 +249,18 @@ without requiring the source code to be rewritten.")
     (properties '((timeout . 72000)               ;20 hours
                   (max-silent-time . 36000)))     ;10 hours (needed on ARM
                                                   ;  when heavily loaded)
+    (arguments
+     `(#:configure-flags
+       (list
+        ,@(if (hurd-triplet? (or (%current-system)
+                                 (%current-target-system)))
+              '("--disable-largefile")
+              '()))
+       ,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())))
+
     (native-search-paths
      (list (search-path-specification
             (variable "GUILE_LOAD_PATH")
