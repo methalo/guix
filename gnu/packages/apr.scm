@@ -23,6 +23,7 @@
   #:use-module (guix download)
   #:use-module (guix build-system gnu)
   #:use-module (gnu packages)
+  #:use-module (gnu packages hurd)  
   #:use-module (gnu packages perl)
   #:use-module (gnu packages xml)
   #:use-module (gnu packages autotools))
@@ -43,10 +44,17 @@
              (patch-flags '("-p0"))))
     (build-system gnu-build-system)
     (arguments
-     ;; Sometimes we end up with two processes concurrently trying to make
-     ;; 'libmod_test.la': <http://hydra.gnu.org/build/60266/nixlog/2/raw>.
-     ;; Thus, build sequentially.
-     '(#:parallel-build? #f
+     `(#:configure-flags
+       (list
+        ,@(if (hurd-triplet? (or (%current-system)
+                                 (%current-target-system)))
+              '("apr_cv_struct_ipmreq=no")
+              '()))
+       ,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:parallel-build? #f
        #:parallel-tests? #f))
     (inputs `(("perl" ,perl)
               ("libltdl" ,libltdl)))
