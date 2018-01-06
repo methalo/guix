@@ -678,6 +678,7 @@ dist_patch_DATA =						\
   %D%/packages/patches/ghostscript-runpath.patch		\
   %D%/packages/patches/glib-networking-ssl-cert-file.patch	\
   %D%/packages/patches/glib-tests-timer.patch			\
+  %D%/packages/patches/glibc-clock_gettime_monotonic.patch	\
   %D%/packages/patches/glibc-CVE-2015-5180.patch		\
   %D%/packages/patches/glibc-CVE-2015-7547.patch		\
   %D%/packages/patches/glibc-CVE-2016-3075.patch		\
@@ -688,8 +689,10 @@ dist_patch_DATA =						\
   %D%/packages/patches/glibc-CVE-2017-1000366-pt3.patch		\
   %D%/packages/patches/glibc-CVE-2017-15670-15671.patch		\
   %D%/packages/patches/glibc-bootstrap-system.patch		\
+  %D%/packages/patches/glibc-hurd-clock_t_centiseconds.patch    \
   %D%/packages/patches/glibc-ldd-x86_64.patch			\
   %D%/packages/patches/glibc-locales.patch			\
+  %D%/packages/patches/glibc-locale-incompatibility.patch   	\
   %D%/packages/patches/glibc-memchr-overflow-i686.patch		\
   %D%/packages/patches/glibc-o-largefile.patch			\
   %D%/packages/patches/glibc-vectorized-strcspn-guards.patch	\

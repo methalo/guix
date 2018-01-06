@@ -178,6 +178,8 @@ implementation offers several extensions over the standard utility.")
    ;; Note: test suite requires ~1GiB of disk space.
    (arguments
     '(#:phases (modify-phases %standard-phases
+    '(#:tests? #f
+      #:phases (modify-phases %standard-phases
                  (add-before 'build 'set-shell-file-name
                    (lambda* (#:key inputs #:allow-other-keys)
                      ;; Do not use "/bin/sh" to run programs.
@@ -714,7 +716,11 @@ with the Linux kernel.")
                                   version "-hurd+libpthread-20161218" ".tar.gz"))
               (sha256
                (base32
-                "0vpdv05j6j3ria5bw8gp468i64gij94cslxkxj9xkfgi6p615b8p"))))
+                "0vpdv05j6j3ria5bw8gp468i64gij94cslxkxj9xkfgi6p615b8p"))
+              (patches (search-patches "glibc-hurd-clock_t_centiseconds.patch"
+                                       "glibc-versioned-locpath.patch"
+                                       "glibc-locales.patch"
+                                       "glibc-clock_gettime_monotonic.patch"))))
 
     ;; Libc provides <hurd.h>, which includes a bunch of Hurd and Mach headers,
     ;; so both should be propagated.
