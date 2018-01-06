@@ -37,6 +37,7 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages curl)
   #:use-module (gnu packages crypto)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages openldap)
   #:use-module (gnu packages perl)
   #:use-module (gnu packages perl-check)
@@ -110,7 +111,11 @@ Daemon and possibly more in the future.")
      ;; The '--with-gpg-error-prefix' argument is needed because otherwise
      ;; 'configure' uses 'gpg-error-config' to determine the '-L' flag, and
      ;; the 'gpg-error-config' it runs is the native one---i.e., the wrong one.
-     `(#:configure-flags
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags
        (list (string-append "--with-gpg-error-prefix="
                             (assoc-ref %build-inputs "libgpg-error-host")))))
     (outputs '("out" "debug"))
