@@ -344,7 +344,9 @@ not valid header was found."
     ;; here we allow checking entire disks for file systems, too.
     (> major 2))                      ;ignore RAM disks and floppy disks
 
-  (call-with-input-file "/proc/partitions"
+  ;; On GNU/Hurd we don't have '/proc/partitions', as workaround copy
+  ;; the partition file to your home and change the PATH.
+  (call-with-input-file "/home/jin/partitions"
     (lambda (port)
       ;; Skip the two header lines.
       (read-line port)
