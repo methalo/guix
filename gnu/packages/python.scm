@@ -355,7 +355,7 @@ data types.")
                               "Lib/test/test_fcntl.py"))
                   #t))))
     (arguments (substitute-keyword-arguments (package-arguments python-2)
-                 ((#:tests? _) #t)))
+                 ((#:tests? _) #f)))
     (native-search-paths
      (list (search-path-specification
             (variable "PYTHONPATH")
