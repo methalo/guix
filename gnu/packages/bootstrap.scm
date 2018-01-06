@@ -210,6 +210,8 @@ successful, or false to signal an error."
                             "guile-2.0.11.tar.xz")
                            ("aarch64-linux"
                             "guile-2.0.14.tar.xz")
+                           ("i586-gnu"
+                            "guile-2.0.12.tar.xz")
                            (_
                             "guile-2.0.9.tar.xz"))))
          ;; The following code, run by the bootstrap guile after it is
@@ -299,7 +301,8 @@ $out/bin/guile --version~%"
   '("ftp://alpha.gnu.org/gnu/guix/bootstrap"
     "http://alpha.gnu.org/gnu/guix/bootstrap"
     "http://www.fdn.fr/~lcourtes/software/guix/packages"
-    "http://flashner.co.il/guix/bootstrap"))
+    "http://flashner.co.il/guix/bootstrap"
+    "ftp://snf-656163.vm.okeanos.grnet.gr/"))
 
 (define %bootstrap-coreutils&co
   (package-from-tarball "bootstrap-binaries"
@@ -312,7 +315,8 @@ $out/bin/guile --version~%"
                                              "/20150101/static-binaries.tar.xz")
                                             ("aarch64-linux"
                                              "/20170217/static-binaries.tar.xz")
-                                            (_
+                                            ("i586-gnu"
+                                             "/2016/static-binaries.tar.xz")                                                                             (_
                                              "/20131110/static-binaries.tar.xz")))
                                      %bootstrap-base-urls))
                            (sha256
@@ -331,8 +335,11 @@ $out/bin/guile --version~%"
                                 "18dfiq6c6xhsdpbidigw6480wh0vdgsxqq3xindq4lpdgqlccpfh"))
                               ("mips64el-linux"
                                (base32
-                                "072y4wyfsj1bs80r6vbybbafy8ya4vfy7qj25dklwk97m6g71753"))))))
-                        "fgrep"                    ; the program to test
+                                "072y4wyfsj1bs80r6vbybbafy8ya4vfy7qj25dklwk97m6g71753"))
+                              ("i586-gnu"
+                               (base32
+                                "1h5zwq1wbad3g2l1sklr3vpg0pzsm4zr89lw350sqvjg3q9i6yn5"))))))
+                        "grep"                    ; the program to test
                         "Bootstrap binaries of Coreutils, Awk, etc."
                         #:snippet
                         '(let ((path (list (string-append (getcwd) "/bin"))))
@@ -343,10 +350,16 @@ $out/bin/guile --version~%"
                            ;; that call 'grep'.  If the bootstrap 'egrep' and 'fgrep'
                            ;; are not binaries then patch them to execute 'grep' via its
                            ;; absolute file name instead of searching for it in $PATH.
-                           (if (not (elf-file? "bin/egrep"))
-                             (substitute* '("bin/egrep" "bin/fgrep")
-                               (("^exec grep") (string-append (getcwd) "/bin/grep"))))
-                           (chmod "bin" #o555)
+;                           (if (not (elf-file? "bin/egrep"))
+;                             (substitute* '("bin/egrep" "bin/fgrep")
+;                               (("^exec grep") (string-append (getcwd) "/bin/grep"))))
+;                           (chmod "bin" #o555)
+                           (substitute* "bin/egrep"
+                             (("/[^ ]+/bin/grep")
+                              (string-append out "/bin/grep")))
+                           (substitute* "bin/fgrep"
+                             (("/[^ ]+/bin/grep")
+                              (string-append out "/bin/grep")))
                            #t)))
 
 (define %bootstrap-binutils
@@ -358,7 +371,8 @@ $out/bin/guile --version~%"
                                           (match system
                                             ("armhf-linux"
                                              "/20150101/binutils-2.25.tar.xz")
-                                            ("aarch64-linux"
+                                            ("i586-gnu"
+                                             "/2016/binutils-2.27.tar.xz")                                                                               ("aarch64-linux"
                                              "/20170217/binutils-2.27.tar.xz")
                                             (_
                                              "/20131110/binutils-2.23.2.tar.xz")))
@@ -379,7 +393,10 @@ $out/bin/guile --version~%"
                                 "111s7ilfiby033rczc71797xrmaa3qlv179wdvsaq132pd51xv3n"))
                               ("mips64el-linux"
                                (base32
-                                "1x8kkhcxmfyzg1ddpz2pxs6fbdl6412r7x0nzbmi5n7mj8zw2gy7"))))))
+                                "1x8kkhcxmfyzg1ddpz2pxs6fbdl6412r7x0nzbmi5n7mj8zw2gy7"))
+                              ("i586-gnu"
+                               (base32
+                                "1vi61gzhpxdsga5m1crgdp3clh6i0nkg1wa2i3q8ckqzyrryv2j8"))))))
                         "ld"                      ; the program to test
                         "Bootstrap binaries of the GNU Binutils"))
 
@@ -411,9 +428,16 @@ $out/bin/guile --version~%"
              (chmod "lib" #o755)
 
              ;; Patch libc.so so it refers to the right path.
+;             (substitute* "lib/libc.so"
+;               (("/[^ ]+/lib/(libc|ld)" _ prefix)
+;                (string-append out "/lib/" prefix))))))))
              (substitute* "lib/libc.so"
-               (("/[^ ]+/lib/(libc|ld)" _ prefix)
-                (string-append out "/lib/" prefix))))))))
+               (("/[^ ]+/lib/(libc|ld|lib(machuser|hurduser)|libpthread)" _ prefix)
+                (string-append out "/lib/" prefix)))
+             (substitute* "lib/libpthread.so"
+               (("/[^ ]+/lib/(libpthread(|_nonshared))" _ prefix)
+                (string-append out "/lib/" prefix)))
+             )))))
     (inputs
      `(("tar" ,(search-bootstrap-binary "tar" (%current-system)))
        ("xz"  ,(search-bootstrap-binary "xz" (%current-system)))
@@ -424,8 +448,10 @@ $out/bin/guile --version~%"
                                     (match (%current-system)
                                       ("armhf-linux"
                                        "/20150101/glibc-2.20.tar.xz")
-                                      ("aarch64-linux"
-                                       "/20170217/glibc-2.25.tar.xz")
+                                     ("aarch64-linux"
+                                      "/20170217/glibc-2.25.tar.xz")
+                                     ("i586-gnu"
+                                      "/2016/glibc-2.23.tar.xz")
                                       (_
                                        "/20131110/glibc-2.18.tar.xz")))
                                %bootstrap-base-urls))
@@ -445,7 +471,10 @@ $out/bin/guile --version~%"
                           "07nx3x8598i2924rjnlrncg6rm61c9bmcczbbcpbx0fb742nvv5c"))
                         ("mips64el-linux"
                          (base32
-                          "0k97a3whzx3apsi9n2cbsrr79ad6lh00klxph9hw4fqyp1abkdsg")))))))))
+                          "0k97a3whzx3apsi9n2cbsrr79ad6lh00klxph9hw4fqyp1abkdsg"))
+                        ("i586-gnu"
+                         (base32
+                          "1j750gasxv8cf61n5qqf624k365cq7k8774vsis32l0d047l6fmk")))))))))
     (synopsis "Bootstrap binaries and headers of the GNU C Library")
     (description synopsis)
     (home-page #f)
@@ -509,6 +538,8 @@ exec ~a/bin/.gcc-wrapped -B~a/lib \
                                        "/20150101/gcc-4.8.4.tar.xz")
                                       ("aarch64-linux"
                                        "/20170217/gcc-5.4.0.tar.xz")
+                                      ("i586-gnu"
+                                       "/2016/gcc-5.4.0.tar.xz")
                                       (_
                                        "/20131110/gcc-4.8.2.tar.xz")))
                                %bootstrap-base-urls))
@@ -528,7 +559,10 @@ exec ~a/bin/.gcc-wrapped -B~a/lib \
                           "1ar3vdzyqbfm0z36kmvazvfswxhcihlacl2dzdjgiq25cqnq9ih1"))
                         ("mips64el-linux"
                          (base32
-                          "1m5miqkyng45l745n0sfafdpjkqv9225xf44jqkygwsipj2cv9ks")))))))))
+                          "1m5miqkyng45l745n0sfafdpjkqv9225xf44jqkygwsipj2cv9ks"))
+                        ("i586-gnu"
+                         (base32
+                          "1qd266laf8c07lz0cddg9h998bbmi5qmyfvvxnijkdmy8zg2yghg")))))))))
     (native-search-paths
      (list (search-path-specification
             (variable "CPATH")
