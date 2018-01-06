@@ -722,7 +722,11 @@ slabtop, and skill.")
                      ("perl" ,perl)
                      ("procps" ,procps)))
     (arguments
-     '(;; util-linux is the preferred source for some of the libraries and
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       ;; util-linux is the preferred source for some of the libraries and
        ;; commands, so disable them (see, e.g.,
        ;; <http://git.buildroot.net/buildroot/commit/?id=e1ffc2f791b33633>.)
        #:configure-flags (list "--disable-libblkid"
