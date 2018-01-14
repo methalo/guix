@@ -1,0 +1,54 @@
+From e13f6eddc059a647e81ed4e7194558d4728ef38b Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Wed, 22 Nov 2017 22:48:44 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-9.patch.
+
+---
+ src/include/k5-int.h                        | 4 ++++
+ src/lib/gssapi/spnego/spnego_mech.c         | 3 +++
+ src/plugins/kdb/db2/libdb2/include/db-int.h | 3 +++
+ 3 files changed, 10 insertions(+)
+
+diff --git a/src/include/k5-int.h b/src/include/k5-int.h
+index e1b1cb040..94a792b98 100644
+--- a/src/include/k5-int.h
++++ b/src/include/k5-int.h
+@@ -582,6 +582,10 @@ extern char *strdup (const char *);
+ #include <sys/param.h>                  /* MAXPATHLEN */
+ #endif
+ 
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
++
+ #ifdef HAVE_SYS_FILE_H
+ #include <sys/file.h>                   /* prototypes for file-related
+                                            syscalls; flags for open &
+diff --git a/src/lib/gssapi/spnego/spnego_mech.c b/src/lib/gssapi/spnego/spnego_mech.c
+index 9d6027ce8..585d8a658 100644
+--- a/src/lib/gssapi/spnego/spnego_mech.c
++++ b/src/lib/gssapi/spnego/spnego_mech.c
+@@ -65,6 +65,9 @@
+ #include	"gssapiP_spnego.h"
+ #include	<gssapi_err_generic.h>
+ 
++#ifndef MAXHOSTNAMELEN
++#define MAXHOSTNAMELEN 256
++#endif
+ 
+ #undef g_token_size
+ #undef g_verify_token_header
+diff --git a/src/plugins/kdb/db2/libdb2/include/db-int.h b/src/plugins/kdb/db2/libdb2/include/db-int.h
+index 7e981d4a5..3088eb792 100644
+--- a/src/plugins/kdb/db2/libdb2/include/db-int.h
++++ b/src/plugins/kdb/db2/libdb2/include/db-int.h
+@@ -281,3 +281,6 @@ void	 __dbpanic __P((DB *dbp));
+ #define O_BINARY	0		/* Needed for Win32 compiles */
+ #endif
+ #endif /* _DB_INT_H_ */
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
+-- 
+2.14.1
+

@@ -1,0 +1,26 @@
+From 67b2b4a49c30efd092c01f22847a19ae467a7238 Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Tue, 21 Nov 2017 23:48:01 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-2.
+
+---
+ src/lib/kdb/kdb_default.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/lib/kdb/kdb_default.c b/src/lib/kdb/kdb_default.c
+index a1021f13a..6e6dd09b5 100644
+--- a/src/lib/kdb/kdb_default.c
++++ b/src/lib/kdb/kdb_default.c
+@@ -35,6 +35,9 @@
+ #include <errno.h>
+ #include <arpa/inet.h>
+ 
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
+ 
+ /*
+  * Given a particular enctype and optional salttype and kvno, find the
+-- 
+2.14.1
+

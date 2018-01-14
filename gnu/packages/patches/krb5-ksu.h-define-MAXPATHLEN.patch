@@ -1,0 +1,26 @@
+From 8d62c2f19fc71db6e4ba078234f02ad5fb3b3652 Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Wed, 22 Nov 2017 21:53:13 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-6.
+
+---
+ src/clients/ksu/ksu.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/clients/ksu/ksu.h b/src/clients/ksu/ksu.h
+index 3bf0bd438..de9958ab2 100644
+--- a/src/clients/ksu/ksu.h
++++ b/src/clients/ksu/ksu.h
+@@ -56,6 +56,9 @@
+ #define MAX_CMD 2048 /* this is temp, should use realloc instead,
+                         as done in most of the code */
+ 
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
+ 
+ extern int optind;
+ extern char * optarg;
+-- 
+2.14.1
+

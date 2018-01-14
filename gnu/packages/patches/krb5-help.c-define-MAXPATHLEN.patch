@@ -1,0 +1,12 @@
+--- krb5-1.15.2/src/util/ss/help.c	2017-09-25 11:28:22.000000000 -0500
++++ krb5-1.15.2/src/util/ss/help.c	2018-01-14 15:49:32.733854932 -0600
+@@ -14,6 +14,9 @@
+ #include "ss_internal.h"
+ #include "copyright.h"
+ 
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
+ 
+ void ss_help (argc, argv, sci_idx, info_ptr)
+     int argc;
