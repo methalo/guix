@@ -840,6 +840,8 @@ system administrator.")
               (sha256
                (base32
                 "0s33szq6q59v5s377l4v6ybsdy7pfq6sz7y364j4x09ssdn79ibl"))
+              (patches (search-patches "sudo-define-utime.patch"
+				       "sudo-define-WIFCONTINUED.patch"))
               (modules '((guix build utils)))
               (snippet
                '(delete-file-recursively "lib/zlib"))))
