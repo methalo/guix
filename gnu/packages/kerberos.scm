@@ -55,7 +55,19 @@
                                   "/krb5-" version ".tar.gz"))
               (sha256
                (base32
-                "0igbi5d095c2hgpn2cixpc4q2ij8vgg2bx7yjfly5zfmvlqqhz23"))))
+                "0igbi5d095c2hgpn2cixpc4q2ij8vgg2bx7yjfly5zfmvlqqhz23"))
+              (patches (search-patches
+                        "krb5-help.c-define-MAXPATHLEN.patch"
+                        "krb5-sn2princ.c-define-MAXHOSTNAMELEN.patch"
+                        "krb5-kdb_default.c-define-MAXPATHLEN.patch"
+                        "krb5-dbm.c-define-MAXPATHLEN.patch"
+                        "krb5-bt_open.c-define-MAXPATHLEN.patch"
+                        "krb5-ktutil_funcs.c-define-MAXPATHLEN.patch"
+                        "krb5-ksu.h-define-MAXPATHLEN.patch"
+                        "krb5-resolve.c-define-MAXPATHLEN.patch"
+                        "krb5-define-MACROS.patch"
+                        "krb5-kdb_default.c-define-MAXPATHLEN.patch"
+                        "krb5-kprop_util.c-define-MAXHOSTNAMELEN.patch"))))
     (build-system gnu-build-system)
     (native-inputs
      `(("bison" ,bison)
