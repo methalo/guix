@@ -38,6 +38,7 @@
   #:use-module (gnu packages gperf)
   #:use-module (gnu packages groff)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages logging)
   #:use-module (gnu packages m4)
@@ -111,11 +112,16 @@ remote applications.")
    ;; zlib libraries, so we need to propagate the inputs.
    (propagated-inputs `(("libgcrypt" ,libgcrypt)
                         ("zlib" ,zlib)))
-   (arguments '(#:configure-flags `("--with-libgcrypt")
-                #:phases (modify-phases %standard-phases
-                           (add-before 'configure 'autoreconf
-                             (lambda _
-                               (zero? (system* "autoreconf" "-v")))))))
+   (arguments
+    `(,@(if (hurd-triplet? (or (%current-system)
+                               (%current-target-system)))
+            '(#:tests? #f)
+            '())
+      #:configure-flags `("--with-libgcrypt")
+      #:phases (modify-phases %standard-phases
+                 (add-before 'configure 'autoreconf
+                   (lambda _
+                     (zero? (system* "autoreconf" "-v")))))))
    (native-inputs `(("autoconf" ,autoconf)
                     ("automake" ,automake)))
    (synopsis "Client-side C library implementing the SSH2 protocol")
