@@ -3193,6 +3193,11 @@ or to multiple server ports.")
         (base32
          "05y94mb1vdw32mvwb0cp2h4ggh32f8j8nwwfjb8kjwxvfkfhyp9h"))))
     (build-system perl-build-system)
+    (arguments
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())))
     (propagated-inputs
      `(("perl-io-socket-ssl" ,perl-io-socket-ssl)))
     (home-page "http://search.cpan.org/dist/Net-SMTP-SSL")
