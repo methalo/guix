@@ -43,6 +43,7 @@
   #:use-module (gnu packages check)
   #:use-module (gnu packages dns)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages haskell)
   #:use-module (gnu packages haskell-check)
   #:use-module (gnu packages haskell-crypto)
@@ -173,7 +174,11 @@ living in the same process.")
                "15ihq6p0hnnhs8cnjrkj40dmlcaa1jjg8xg0g2ydbnlqs454ixbr"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:configure-flags
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags
        (list
              ;; GnuTLS doesn't consult any environment variables to specify
              ;; the location of the system-wide trust store.  Instead it has a
@@ -207,7 +212,11 @@ living in the same process.")
                "debug"
                "doc"))                            ;4.1 MiB of man pages
     (native-inputs
-     `(("net-tools" ,net-tools-for-tests)
+     `(,@(if (string-contains (or (%current-target-system)
+                                (%current-system))
+                            "-linux")
+           `(("net-tools" ,net-tools-for-tests))
+           '())
        ("pkg-config" ,pkg-config)
        ("which" ,which)))
     (inputs
