@@ -659,7 +659,11 @@ certificates for free.")
     (build-system perl-build-system)
     (inputs `(("openssl" ,openssl)))
     (arguments
-     `(#:phases
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:phases
        (modify-phases %standard-phases
          (add-before
           'configure 'set-ssl-prefix
