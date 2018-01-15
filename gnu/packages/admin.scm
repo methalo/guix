@@ -54,6 +54,7 @@
   #:use-module (gnu packages lua)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages gettext)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages pcre)
   #:use-module (gnu packages perl)
   #:use-module (gnu packages perl-check)
@@ -166,7 +167,11 @@ and provides a \"top-like\" mode (monitoring).")
               (patches (search-patches "shepherd-close-fds.patch"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:configure-flags '("--localstatedir=/var")))
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags '("--localstatedir=/var")))
     (native-inputs
      `(("pkg-config" ,pkg-config)
 
