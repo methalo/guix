@@ -195,6 +195,7 @@ as well as the classic centralized workflow.")
                      ;; nars; see <https://bugs.gnu.org/21949>.
                      "NO_INSTALL_HARDLINKS=indeed")
       #:test-target "test"
+      #:tests? #f
 
       ;; Tests fail randomly when parallel: <https://bugs.gnu.org/29512>.
       #:parallel-tests? #f
