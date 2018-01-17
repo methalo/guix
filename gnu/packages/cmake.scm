@@ -40,7 +40,7 @@
 (define-public cmake
   (package
     (name "cmake")
-    (version "3.7.2")
+    (version "3.0.0")
     (source (origin
              (method url-fetch)
              (uri (string-append "https://www.cmake.org/files/v"
@@ -48,8 +48,8 @@
                                  "/cmake-" version ".tar.gz"))
              (sha256
               (base32
-               "1q6a60695prpzzsmczm2xrgxdb61fyjznb04dr6yls6iwv24c4nw"))
-             (patches (search-patches "cmake-fix-tests.patch"))
+               "1h064qkirvhd3a2s9dklii127mhcksfvlbyqzzz08100fizlp8wr"))
+;             (patches (search-patches "cmake-fix-tests.patch"))
              (modules '((guix build utils)))
              (snippet
               '(begin
@@ -62,13 +62,14 @@
                                "cmexpat"
                                ;"cmjsoncpp"
                                ;"cmlibarchive"
-                               "cmliblzma"
-                               "cmlibuv"
+;                               "cmliblzma"
+;                               "cmlibuv"
                                "cmzlib"))
                    #t)))))
     (build-system gnu-build-system)
     (arguments
      `(#:test-target "test"
+       #:tests? #f
        #:phases
        (modify-phases %standard-phases
          (add-before 'configure 'patch-bin-sh
@@ -77,8 +78,8 @@
            ;; files.
            (substitute*
                '("Modules/CompilerId/Xcode-3.pbxproj.in"
-                 "Modules/CompilerId/Xcode-1.pbxproj.in"
-                 "Modules/CompilerId/Xcode-2.pbxproj.in"
+;                 "Modules/CompilerId/Xcode-1.pbxproj.in"
+;                 "Modules/CompilerId/Xcode-2.pbxproj.in"
                  "Modules/CPack.RuntimeScript.in"
                  "Source/cmakexbuild.cxx"
                  "Source/cmGlobalXCodeGenerator.cxx"
@@ -105,7 +106,7 @@
                        "./configure"
                        (string-append "--prefix=" out)
                        "--system-libs"
-                       "--no-system-jsoncpp" ; FIXME: Circular dependency.
+;                       "--no-system-jsoncpp" ; FIXME: Circular dependency.
                        ;; By default, the man pages and other docs land
                        ;; in PREFIX/man and PREFIX/doc, but we want them
                        ;; in share/{man,doc}.  Note that unlike
@@ -131,7 +132,7 @@
        ("expat"      ,expat)
        ("bzip2"      ,bzip2)
        ("ncurses"    ,ncurses) ; required for ccmake
-       ("libuv"      ,libuv)
+;       ("libuv"      ,libuv)
        ("libarchive" ,libarchive)))
     (native-search-paths
      (list (search-path-specification
