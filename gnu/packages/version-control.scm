@@ -397,7 +397,11 @@ everything from small to very large projects with speed and efficiency.")
     (build-system cmake-build-system)
     (outputs '("out" "debug"))
     (arguments
-     `(#:configure-flags '("-DUSE_SHA1DC=ON") ; SHA-1 collision detection
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags '("-DUSE_SHA1DC=ON") ; SHA-1 collision detection
        #:phases
        (modify-phases %standard-phases
          (add-after 'unpack 'fix-hardcoded-paths
@@ -409,8 +413,9 @@ everything from small to very large projects with speed and efficiency.")
                (("/bin/rm") (which "rm")))
              #t))
          ;; Run checks more verbosely.
-         (replace 'check
-           (lambda _ (zero? (system* "./libgit2_clar" "-v" "-Q")))))))
+;         (replace 'check
+;           (lambda _ (zero? (system* "./libgit2_clar" "-v" "-Q"))))
+         )))
     (inputs
      `(("libssh2" ,libssh2)
        ("http-parser" ,http-parser)
