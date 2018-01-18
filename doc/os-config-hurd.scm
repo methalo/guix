@@ -29,4 +29,5 @@
                %base-user-accounts))
 
   (packages (cons* 
-	     %base-packages-hurd)))
+	     %base-packages-hurd))
+  (services %base-services-hurd))

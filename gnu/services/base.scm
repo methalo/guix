@@ -1,3 +1,4 @@
+
 ;;; GNU Guix --- Functional package management for GNU
 ;;; Copyright © 2013, 2014, 2015, 2016, 2017 Ludovic Courtès <ludo@gnu.org>
 ;;; Copyright © 2015, 2016 Alex Kost <alezost@gmail.com>
@@ -153,7 +154,8 @@
             pam-limits-service-type
             pam-limits-service
 
-            %base-services))
+            %base-services
+            %base-services-hurd))
 
 ;;; Commentary:
 ;;;
@@ -1996,6 +1998,16 @@ This service is not part of @var{%base-services}."
         ;; used, so enable them by default.  The FUSE and ALSA rules are
         ;; less critical, but handy.
         (udev-service #:rules (list lvm2 fuse alsa-utils crda))
+
+        (service special-files-service-type
+                 `(("/bin/sh" ,(file-append (canonical-package bash)
+                                            "/bin/sh"))))))
+
+(define %base-services-hurd
+  ;; Convenience variable holding the basic services.
+  (list (login-service)
+
+        (guix-service)
 
         (service special-files-service-type
                  `(("/bin/sh" ,(file-append (canonical-package bash)
