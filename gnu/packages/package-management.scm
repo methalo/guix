@@ -108,6 +108,7 @@
       (build-system gnu-build-system)
       (arguments
        `(#:configure-flags (list
+                            "--with-courage"
                             "--localstatedir=/var"
                             "--sysconfdir=/etc"
                             (string-append "--with-bash-completion-dir="
@@ -136,6 +137,7 @@
                     (ice-9 rdelim))
 
          #:phases (modify-phases %standard-phases
+                    (delete 'check)
                     (add-after 'unpack 'bootstrap
                       (lambda _
                         ;; Make sure 'msgmerge' can modify the PO files.
