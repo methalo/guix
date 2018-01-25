@@ -28,6 +28,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages image)
   #:use-module (gnu packages fontutils)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages perl)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages xml)
@@ -48,7 +49,11 @@
               (patches (search-patches "tcl-mkindex-deterministic.patch"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:phases (alist-cons-before
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:phases (alist-cons-before
                  'configure 'pre-configure
                  (lambda _
                    (chdir "unix"))
