@@ -1,0 +1,19 @@
+
+Steps to generate the necessary binaries to start GNU Hurd through the GNU Guix package manager.
+
+1) In Debian GNU/Hurd prepare the environment for GNU Guix.
+
+ 1.1) Install all dependencies required for GNU Guile 2.2,
+      you can install those packages from tarballs.
+      
+2) Add RAW file to QEMU with the label 'my-root', format the partition (ext2)
+   and mount the new partition under /guix.
+   
+3) Build the hello package to test.
+
+4) In Debian GNU/Hurd we don't have '/proc/partitions', as workaround copy the partition file
+   to your home and change the PATH in (build file-systems).
+   
+5) Generate all the binaries required to boot GNU Hurd.
+   "./pre-inst-env guix system init ~/guix/doc/os-config-hurd.scm /guix 
+    --fallback --no-substitutes"
