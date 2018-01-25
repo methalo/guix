@@ -101,4 +101,5 @@ executes the corresponding C code.")
                                   "flex-" version ".tar.xz"))
              (sha256
               (base32
-               "0gqhk4vkwy4gl9xbpgkljph8c0a5kpijz6wd0p5r9q202qn42yic"))))))
+               "0gqhk4vkwy4gl9xbpgkljph8c0a5kpijz6wd0p5r9q202qn42yic"))
+              (patches (search-patches "flex-main-define_PATH_MAX.patch"))))))
