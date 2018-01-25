@@ -21,6 +21,7 @@
   #:use-module (guix licenses)
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages libsigsegv)
   #:use-module (guix packages)
   #:use-module (guix download)
@@ -38,8 +39,11 @@
              (base32 "0rn2mmjxm767zliqzd67j7h2ncjn4j0321c60y9fy3grs3i89qak"))))
    (build-system gnu-build-system)
    (arguments
-    `(#:parallel-tests? #f                ; test suite fails in parallel
-
+    `(,@(if (hurd-triplet? (or (%current-system)
+                               (%current-target-system)))
+            '(#:tests? #f)
+            '())
+      #:parallel-tests? #f                ; test suite fails in parallel
       #:phases (modify-phases %standard-phases
                  (add-before 'configure 'set-shell-file-name
                    (lambda* (#:key inputs #:allow-other-keys)
