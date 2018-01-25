@@ -579,7 +579,8 @@ block devices, UUIDs, TTYs, and many other tools.")
                                   "procps-ng-" version ".tar.xz"))
               (sha256
                (base32
-                "1m57w6jmry84njd5sgk5afycbglql0al80grx027kwqqcfw5mmkf"))))
+                "1m57w6jmry84njd5sgk5afycbglql0al80grx027kwqqcfw5mmkf"))
+              (patches (search-patches "procps-watch-hostname-max.patch"))))
     (build-system gnu-build-system)
     (arguments
      '(#:modules ((guix build utils)
