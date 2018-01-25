@@ -170,11 +170,12 @@
        ;;     test_winreg test_winsound test_zipfile64
        ;; 4 skips unexpected on linux2:
        ;;     test_bsddb test_bsddb3 test_gdb test_ioctl
-       #:test-target "test"
+;       #:test-target "test"
+       #:tests? #f
        #:configure-flags
        (list "--enable-shared"                    ;allow embedding
              "--with-system-ffi"                  ;build ctypes
-             "--with-ensurepip=install"           ;install pip and setuptools
+;             "--with-ensurepip=install"           ;install pip and setuptools
              "--enable-unicode=ucs4"
              (string-append "LDFLAGS=-Wl,-rpath="
                             (assoc-ref %outputs "out") "/lib"))
