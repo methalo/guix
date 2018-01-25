@@ -23,6 +23,7 @@
 (define-module (gnu packages pcre)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (gnu packages compression)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages readline)
   #:use-module (gnu packages)
   #:use-module (guix packages)
@@ -52,7 +53,11 @@
              ("readline" ,readline)
              ("zlib" ,zlib)))
    (arguments
-    '(#:disallowed-references ("doc")
+    `(,@(if (hurd-triplet? (or (%current-system)
+                               (%current-target-system)))
+            '(#:tests? #f)
+            '())
+      #:disallowed-references ("doc")
       #:configure-flags '("--enable-utf"
                           "--enable-pcregrep-libz"
                           "--enable-pcregrep-libbz2"
