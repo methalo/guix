@@ -38,6 +38,7 @@
   #:use-module (gnu packages gettext)
   #:use-module (gnu packages gnome)
   #:use-module (gnu packages gtk)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages nettle)
@@ -167,7 +168,11 @@ shared NFS home directories.")
       ("bash" ,bash)
       ("tzdata" ,tzdata-2017a)))                  ; for tests/gdatetime.c
    (arguments
-    `(#:disallowed-references (,tzdata-2017a)
+    `(,@(if (hurd-triplet? (or (%current-system)
+                               (%current-target-system)))
+            '(#:tests? #f)
+            '())
+      #:disallowed-references (,tzdata-2017a)
       #:phases
       (modify-phases %standard-phases
         (add-before 'build 'pre-build
