@@ -132,7 +132,11 @@ including, for example, recursive directory searching.")
    (build-system gnu-build-system)
    (synopsis "Stream editor")
    (arguments
-    `(#:phases
+    `(
+      ,@(if (string-prefix? "i586-gnu" (%current-system))
+            `(#:tests? #f)
+            '())
+      #:phases
       (modify-phases %standard-phases
         (add-after 'unpack 'dont-rebuild-sed.1
           (lambda _
@@ -307,9 +311,10 @@ used to apply commands with arbitrarily long arguments.")
 
              ;; Drop the dependency on libcap when cross-compiling since it's
              ;; not quite cross-compilable.
-             ,@(if (%current-target-system)
+             ,@(if (or (%current-target-system)
+                       (string-prefix? "i586-gnu" (%current-system)))
                    '()
-                   `(("libcap" ,libcap)))))  ;capability support is 'ls', etc.
+                   `())))  ;capability support is 'ls', etc.
    (native-inputs
     ;; Perl is needed to run tests in native builds, and to run the bundled
     ;; copy of help2man.  However, don't pass it when cross-compiling since
@@ -320,7 +325,11 @@ used to apply commands with arbitrarily long arguments.")
         `(("perl" ,perl))))
    (outputs '("out" "debug"))
    (arguments
-    `(#:parallel-build? #f            ; help2man may be called too early
+    `(,@(if (string-prefix? "i586-gnu" (%current-system))
+                            `(#:tests? #f)
+                            '())
+
+      #:parallel-build? #f            ; help2man may be called too early
       #:phases (alist-cons-before
                 'build 'patch-shell-references
                 (lambda* (#:key inputs #:allow-other-keys)
