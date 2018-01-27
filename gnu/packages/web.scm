@@ -69,6 +69,7 @@
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages gperf)
   #:use-module (gnu packages gtk)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages icu4c)
   #:use-module (gnu packages image)
   #:use-module (gnu packages libidn)
@@ -2540,6 +2541,11 @@ and IPv6 sockets, intended as a replacement for IO::Socket::INET.")
               (patches (search-patches
                         "perl-io-socket-ssl-openssl-1.0.2f-fix.patch"))))
     (build-system perl-build-system)
+    (arguments
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())))
     (propagated-inputs
      `(("perl-net-ssleay" ,perl-net-ssleay)
        ;; for IDN support
