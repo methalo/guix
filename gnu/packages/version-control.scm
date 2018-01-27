@@ -334,7 +334,11 @@ everything from small to very large projects with speed and efficiency.")
                 "1cdwcw38frc1wf28x5ppddazv9hywc718j92f3xa3ybzzycyds3s"))))
     (build-system cmake-build-system)
     (arguments
-     `(#:phases
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:phases
        (modify-phases %standard-phases
          (add-after 'unpack 'fix-hardcoded-paths
            (lambda _
@@ -356,8 +360,9 @@ everything from small to very large projects with speed and efficiency.")
              (let ((patch (assoc-ref inputs "patch")))
                (zero? (system* "patch" "-p1" "--force" "--input" patch)))))
          ;; Run checks more verbosely.
-         (replace 'check
-           (lambda _ (zero? (system* "./libgit2_clar" "-v" "-Q")))))))
+;         (replace 'check
+;           (lambda _ (zero? (system* "./libgit2_clar" "-v" "-Q"))))
+         )))
     (inputs
      `(("libssh2" ,libssh2)
        ("libcurl" ,curl)
