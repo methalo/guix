@@ -233,7 +233,11 @@ Additionally, various channel-specific options can be negotiated.")
                 "0pkiq3fm15pr4w1r420rrwwfmi4jz492r6l6vzjk6v73xlyfyfl3"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:phases (modify-phases %standard-phases
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:phases (modify-phases %standard-phases
                   (add-after 'unpack 'autoreconf
                     (lambda* (#:key inputs #:allow-other-keys)
                       (zero? (system* "autoreconf" "-vfi"))))
