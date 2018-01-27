@@ -54,13 +54,18 @@
              (base32
               "0044p20hx07fwgw2mbwj1fkx04615hhs1qyx4mawj2bhqvrnppnp"))))
    (build-system gnu-build-system)
-   (inputs `(("bdb" ,bdb-5.3)
-             ("cyrus-sasl" ,cyrus-sasl)
-             ("gnutls" ,gnutls)
-             ("groff" ,groff)
-             ("icu4c" ,icu4c)
-             ("libgcrypt" ,libgcrypt)
-             ("zlib" ,zlib)))
+   (inputs
+    `(,@(if (string-contains (or (%current-target-system)
+                                 (%current-system))
+                             "-linux")
+            `(("cyrus-sasl" ,cyrus-sasl))
+            '())
+      ("bdb" ,bdb-5.3)
+      ("gnutls" ,gnutls)
+      ("groff" ,groff)
+      ("icu4c" ,icu4c)
+      ("libgcrypt" ,libgcrypt)
+      ("zlib" ,zlib)))
    (native-inputs `(("libtool" ,libtool)))
    (arguments
     `(#:tests? #f
