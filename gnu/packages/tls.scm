@@ -604,7 +604,11 @@ certificates for free.")
         ,(search-patch "perl-net-ssleay-disable-ede-test.patch"))))
     (inputs `(("openssl" ,openssl)))
     (arguments
-     `(#:phases
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:phases
        (modify-phases %standard-phases
          (add-after
           'unpack 'apply-patch
