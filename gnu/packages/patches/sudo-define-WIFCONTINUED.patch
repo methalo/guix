@@ -1,0 +1,15 @@
+--- a/src/exec_monitor.c	2017-08-23 13:07:28.000000000 -0500
++++ b/src/exec_monitor.c	2017-11-24 17:35:00.768262852 -0600
+@@ -39,6 +39,12 @@
+ #include "sudo_plugin.h"
+ #include "sudo_plugin_int.h"
+ 
++# if !defined (WIFCONTINUED)
++#   define WIFCONTINUED(stat) 0
++# endif /* WIFCONTINUED */
++
++#define WCONTINUED	8	/* Report continued child.  */
++
+ struct monitor_closure {
+     pid_t cmnd_pid;
+     pid_t cmnd_pgrp;

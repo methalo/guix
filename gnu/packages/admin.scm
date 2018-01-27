@@ -796,7 +796,7 @@ system administrator.")
 (define-public sudo
   (package
     (name "sudo")
-    (version "1.8.19p1")
+    (version "1.8.21p2")
     (source (origin
               (method url-fetch)
               (uri
@@ -806,7 +806,9 @@ system administrator.")
                                     version ".tar.gz")))
               (sha256
                (base32
-                "14pwdwl03kdbbyjkvxrfx409x3c1fjqz8aqz2wgwddinhz7v3bxq"))))
+                "0s33szq6q59v5s377l4v6ybsdy7pfq6sz7y364j4x09ssdn79ibl"))
+	      (patches (search-patches "sudo-define-utime.patch"
+				       "sudo-define-WIFCONTINUED.patch"))))
     (build-system gnu-build-system)
     (arguments
      `(#:configure-flags
