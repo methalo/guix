@@ -24,6 +24,7 @@
   #:use-module (guix build-system gnu)
   #:use-module (gnu packages pcre)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages boost)
   #:use-module (gnu packages python)
   #:use-module (gnu packages perl))
@@ -41,6 +42,11 @@
               (base32
                "0k7ljh07rla6223lhvljgg881b2qr7hmrfgic9a0j1pckpislf99"))))
     (build-system gnu-build-system)
+    (arguments
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())))
     (native-inputs `(("boost" ,boost)
                      ("pcre" ,pcre "bin")))       ;for 'pcre-config'
     (inputs `(;; Provide these to run the corresponding tests.
