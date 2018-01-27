@@ -1,0 +1,27 @@
+From 31652e9a78ab38d41f323fb0c35092f21deb303f Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Wed, 22 Nov 2017 21:38:08 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-4.
+
+---
+ src/kadmin/ktutil/ktutil_funcs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/kadmin/ktutil/ktutil_funcs.c b/src/kadmin/ktutil/ktutil_funcs.c
+index 7a3aa0dca..f14326b93 100644
+--- a/src/kadmin/ktutil/ktutil_funcs.c
++++ b/src/kadmin/ktutil/ktutil_funcs.c
+@@ -33,6 +33,10 @@
+ #include <string.h>
+ #include <ctype.h>
+ 
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
++
+ /*
+  * Free a kt_list
+  */
+-- 
+2.14.1
+

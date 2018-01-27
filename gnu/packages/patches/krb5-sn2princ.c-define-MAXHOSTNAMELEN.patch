@@ -1,0 +1,27 @@
+From 1101d4956b0b17582cff6ecc0cd4ec92250485e8 Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Tue, 21 Nov 2017 23:27:20 -0600
+Subject: [PATCH] krb5-Define-MAXHOSTNAMELEN.
+
+---
+ src/lib/krb5/os/sn2princ.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/lib/krb5/os/sn2princ.c b/src/lib/krb5/os/sn2princ.c
+index 5932fd9b3..81267272a 100644
+--- a/src/lib/krb5/os/sn2princ.c
++++ b/src/lib/krb5/os/sn2princ.c
+@@ -39,6 +39,10 @@
+ #define DEFAULT_RDNS_LOOKUP 1
+ #endif
+ 
++#ifndef MAXHOSTNAMELEN
++#define MAXHOSTNAMELEN 256
++#endif
++
+ static krb5_boolean
+ use_reverse_dns(krb5_context context)
+ {
+-- 
+2.14.1
+

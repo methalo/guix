@@ -1,0 +1,26 @@
+From fea74e22dc5649c2451421a894c5ec6029b5df27 Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Wed, 22 Nov 2017 21:07:43 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-3.
+
+---
+ src/plugins/kdb/db2/libdb2/hash/dbm.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/plugins/kdb/db2/libdb2/hash/dbm.c b/src/plugins/kdb/db2/libdb2/hash/dbm.c
+index 43eaf444a..fd1acbfdb 100644
+--- a/src/plugins/kdb/db2/libdb2/hash/dbm.c
++++ b/src/plugins/kdb/db2/libdb2/hash/dbm.c
+@@ -57,6 +57,9 @@ static char sccsid[] = "@(#)dbm.c	8.6 (Berkeley) 11/7/95";
+  */
+ 
+ #define NEED_COPY
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
+ 
+ /*
+  *
+-- 
+2.14.1
+

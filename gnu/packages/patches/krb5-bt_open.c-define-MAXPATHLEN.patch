@@ -1,0 +1,26 @@
+From ac8dd9c6a3ecbe5b5caa9674d080d06cf3fdcbaf Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Wed, 22 Nov 2017 21:17:46 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-4.
+
+---
+ src/plugins/kdb/db2/libdb2/btree/bt_open.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/plugins/kdb/db2/libdb2/btree/bt_open.c b/src/plugins/kdb/db2/libdb2/btree/bt_open.c
+index 2977b17f3..2399f222e 100644
+--- a/src/plugins/kdb/db2/libdb2/btree/bt_open.c
++++ b/src/plugins/kdb/db2/libdb2/btree/bt_open.c
+@@ -67,6 +67,9 @@ static char sccsid[] = "@(#)bt_open.c	8.11 (Berkeley) 11/2/95";
+ #undef	MINPSIZE
+ #define	MINPSIZE	128
+ #endif
++#ifndef MAXPATHLEN
++#define MAXPATHLEN 4096
++#endif
+ 
+ static int byteorder __P((void));
+ static int nroot __P((BTREE *));
+-- 
+2.14.1
+

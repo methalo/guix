@@ -1,0 +1,27 @@
+From 07f29b7fe1aaa1c0c7a1e9963d6546b062581ea6 Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Wed, 22 Nov 2017 22:06:41 -0600
+Subject: [PATCH] krb5-Define-MAXPATHLEN-7.
+
+---
+ src/tests/resolve/resolve.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/tests/resolve/resolve.c b/src/tests/resolve/resolve.c
+index 7339d21bd..65797e87f 100644
+--- a/src/tests/resolve/resolve.c
++++ b/src/tests/resolve/resolve.c
+@@ -73,6 +73,10 @@ char *strchr();
+ #include <netinet/in.h>
+ #include <netdb.h>
+ 
++#ifndef MAXHOSTNAMELEN
++#define MAXHOSTNAMELEN 256
++#endif
++
+ int
+ main(argc, argv)
+     int argc;
+-- 
+2.14.1
+
