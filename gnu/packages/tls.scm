@@ -36,6 +36,7 @@
   #:use-module (gnu packages compression)
   #:use-module (gnu packages)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages libbsd)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages libidn)
@@ -154,7 +155,11 @@ living in the same process.")
                "17apwvdkkazh5w8z8mbanpj2yj8s2002qwy46wz4v3akpa33wi5g"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:configure-flags
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags
        (list (string-append "--with-guile-site-dir="
                             (assoc-ref %outputs "out")
                             "/share/guile/site/2.0")
