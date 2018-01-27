@@ -6721,6 +6721,8 @@ add functionality and customization to your projects with their own plugins.")
              (substitute* "setup.py"
                (("^[ \t]*extra_path *= *'FontTools',") ""))
              #t)))))
+    (inputs
+     `(("python-setuptools" ,python-setuptools)))
     (home-page "https://github.com/behdad/fonttools")
     (synopsis "Tools to manipulate font files")
     (description
