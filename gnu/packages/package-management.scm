@@ -83,6 +83,7 @@
     (build-system gnu-build-system)
     (arguments
      `(#:configure-flags (list
+                          "--with-courage"
                           "--localstatedir=/var"
                           "--sysconfdir=/etc"
                           (string-append "--with-bash-completion-dir="
@@ -93,6 +94,7 @@
                                                     "libgcrypt")))
        #:parallel-tests? #f           ;work around <http://bugs.gnu.org/21097>
        #:phases (modify-phases %standard-phases
+                  (delete 'check)
                   (add-before
                    'configure 'copy-bootstrap-guile
                    (lambda* (#:key system inputs #:allow-other-keys)
