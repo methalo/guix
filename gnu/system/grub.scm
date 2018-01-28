@@ -100,7 +100,7 @@ denoting a file name."
 (define %default-theme
   ;; Default theme contributed by Felipe López.
   (grub-theme
-   (images (list %background-image))
+;   (images (list %background-image))
    (color-highlight '((fg . yellow) (bg . black)))
    (color-normal    '((fg . light-gray) (bg . black))))) ;XXX: #x303030
 
@@ -127,10 +127,12 @@ denoting a file name."
                    (default #f))
   (device-mount-point menu-entry-device-mount-point
                       (default "/"))
-  (linux           menu-entry-linux)
+;  (linux           menu-entry-linux)
+  (gnumach           menu-entry-linux)
   (linux-arguments menu-entry-linux-arguments
                    (default '()))          ; list of string-valued gexps
-  (initrd          menu-entry-initrd))     ; file name of the initrd as a gexp
+;  (initrd          menu-entry-initrd)
+  )     ; file name of the initrd as a gexp
 
 
 ;;;
@@ -280,22 +282,30 @@ corresponding to old generations of the system."
   (define entry->gexp
     (match-lambda
      (($ <menu-entry> label device device-mount-point
-                      linux arguments initrd)
+;                      linux
+                      gnumach
+                      arguments
+;                      initrd
+                      )
       ;; Here DEVICE is the store and DEVICE-MOUNT-POINT is its mount point.
       ;; Use the right file names for LINUX and INITRD in case
       ;; DEVICE-MOUNT-POINT is not "/", meaning that the store is on a
       ;; separate partition.
-      (let ((linux  (strip-mount-point device-mount-point linux))
-            (initrd (strip-mount-point device-mount-point initrd)))
+;      (let ((linux  (strip-mount-point device-mount-point linux))
+      (let ((gnumach  (strip-mount-point device-mount-point gnumach))
+;            (initrd (strip-mount-point device-mount-point initrd))
+            )
         #~(format port "menuentry ~s {
   ~a
-  linux ~a ~a
-  initrd ~a
+  gnumach ~a ~a
 }~%"
                   #$label
-                  #$(grub-root-search device linux)
-                  #$linux (string-join (list #$@arguments))
-                  #$initrd)))))
+;                  #$(grub-root-search device linux)
+;                  #$linux (string-join (list #$@arguments))
+                  #$(grub-root-search device gnumach)
+                  #$gnumach (string-join (list #$@arguments))
+;                  #$initrd
+                  )))))
 
   (mlet %store-monad ((sugar (eye-candy config
                                         (menu-entry-device (first entries))
