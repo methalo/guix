@@ -189,8 +189,9 @@ the ownership of '~a' may be incorrect!~%")
       (format log-port "populating '~a'...~%" target)
       (populate os-dir target)
 
-      (mwhen grub?
-        (install-grub* grub.cfg device target)))))
+;      (mwhen grub?
+;        (install-grub* grub.cfg device target))
+      )))
 
 
 ;;;
@@ -378,20 +379,23 @@ NUMBERS, which is a list of generation numbers."
                                   root))
             (kernel           (boot-parameters-kernel params))
             (kernel-arguments (boot-parameters-kernel-arguments params))
-            (initrd           (boot-parameters-initrd params)))
+;            (initrd           (boot-parameters-initrd params))
+            )
        (menu-entry
         (label (string-append label " (#"
                               (number->string number) ", "
                               (seconds->string time) ")"))
         (device (boot-parameters-store-device params))
         (device-mount-point (boot-parameters-store-mount-point params))
-        (linux kernel)
+;        (linux kernel)
+        (gnumach kernel)
         (linux-arguments
          (cons* (string-append "--root=" root-device)
                 (string-append "--system=" system)
                 (string-append "--load=" system "/boot")
                 kernel-arguments))
-        (initrd initrd)))))
+;        (initrd initrd)
+        ))))
 
   (let* ((systems (map (cut generation-file-name profile <>)
                        numbers))
