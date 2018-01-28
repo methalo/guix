@@ -152,7 +152,8 @@
             pam-limits-service-type
             pam-limits-service
 
-            %base-services))
+            %base-services
+            %base-services-hurd))
 
 ;;; Commentary:
 ;;;
@@ -1813,4 +1814,49 @@ This service is not part of @var{%base-services}."
                  `(("/bin/sh" ,(file-append (canonical-package bash)
                                             "/bin/sh"))))))
 
+(define %base-services-hurd
+  ;; Convenience variable holding the basic services.
+  (list (login-service)
+
+;        (service console-font-service-type
+;                 (map (lambda (tty)
+;                        (cons tty %default-console-font))
+;;                      '("tty1" "tty2" "tty3" "tty4" "tty5" "tty6")))
+;                      '("tty1")))
+
+;        (mingetty-service (mingetty-configuration
+;                           (tty "tty1")))
+;        (mingetty-service (mingetty-configuration
+;                           (tty "tty2")))
+;        (mingetty-service (mingetty-configuration
+;                           (tty "tty3")))
+;        (mingetty-service (mingetty-configuration
+;                           (tty "tty4")))
+;        (mingetty-service (mingetty-configuration
+;                           (tty "tty5")))
+;        (mingetty-service (mingetty-configuration
+;                           (tty "tty6")))
+
+        (service static-networking-service-type
+                 (list (static-networking (interface "lo")
+                                          (ip "127.0.0.1")
+                                          (provision '(loopback)))))
+        (syslog-service)
+        (urandom-seed-service)
+        (guix-service)
+        (nscd-service)
+
+        ;; The LVM2 rules are needed as soon as LVM2 or the device-mapper is
+        ;; used, so enable them by default.  The FUSE and ALSA rules are
+        ;; less critical, but handy.
+;        (udev-service #:rules (list ; for build GNU/Hurd.
+;                               lvm2
+;                               fuse
+;                               alsa-utils
+;                               crda
+;                               ))
+
+        (service special-files-service-type
+                 `(("/bin/sh" ,(file-append (canonical-package bash)
+                                            "/bin/sh"))))))
 ;;; base.scm ends here
