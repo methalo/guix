@@ -262,13 +262,21 @@ re-executing them as necessary.")
                "05n65k4ixl85dc6rxc51b1b732gnmm8xnqi424dy9f1nz7ppb3xy"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:configure-flags '("--localstatedir=/var")
+     `(,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())
+       #:configure-flags '("--localstatedir=/var")
        ;; On some systems, 'libls.sh' may fail with an error such as:
        ;; "Failed to tell switch -a apart from -A".
        #:parallel-tests? #f))
     (inputs `(("ncurses" ,ncurses)
               ("readline" ,readline)))        ;for 'ftp'
-    (native-inputs `(("netstat" ,net-tools))) ;for tests
+    (native-inputs  (if (string-contains (or (%current-target-system)
+                                             (%current-system))
+                                         "-gnu")
+                        `()
+                        '(("netstat" ,net-tools)))) ;for tests
     (home-page "https://www.gnu.org/software/inetutils/")
     (synopsis "Basic networking utilities")
     (description
