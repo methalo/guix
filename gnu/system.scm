@@ -113,6 +113,7 @@
             local-host-aliases
             %setuid-programs
             %base-packages
+            %base-packages-hurd
             %base-firmware))
 
 ;;; Commentary:
@@ -378,6 +379,48 @@ explicitly appear in OS."
          kmod eudev
 
          e2fsprogs kbd
+
+         bash-completion
+
+         ;; The packages below are also in %FINAL-INPUTS, so take them from
+         ;; there to avoid duplication.
+         (map canonical-package
+              (list guile-2.0 bash coreutils findutils grep sed
+                    diffutils patch gawk tar gzip bzip2 xz lzip))))
+
+(define %base-packages-hurd
+  ;; Default set of packages globally visible.  It should include anything
+  ;; required for basic administrator tasks.
+  (cons* ;procps
+         ;psmisc
+   which less  ; for build GNU/Hurd.
+;   zile
+;         nano
+;         lsof                                 ;for Guix's 'list-runtime-roots'
+;         pciutils usbutils
+;         util-linux inetutils isc-dhcp
+
+         ;; wireless-tools is deprecated in favor of iw, but it's still what
+         ;; many people are familiar with, so keep it around.
+;         iw wireless-tools rfkill
+
+;         iproute
+;         net-tools                        ; XXX: remove when Inetutils suffices
+;         man-db
+;         info-reader                     ;the standalone Info reader (no Perl)
+
+         ;; The 'sudo' command is already in %SETUID-PROGRAMS, but we also
+         ;; want the other commands and the man pages (notably because
+         ;; auto-completion in Emacs shell relies on man pages.)
+         sudo
+
+         ;; Get 'insmod' & co. from kmod, not module-init-tools, since udev
+         ;; already depends on it anyway.
+;         kmod
+;         eudev
+
+;         e2fsprogs
+;         kbd
 
          bash-completion
 
