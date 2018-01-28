@@ -2,16 +2,14 @@
 (use-package-modules hurd)
 
 (operating-system
-  (host-name "antelope")
+  (host-name "Covenant")
   (timezone "Europe/Paris")
   (locale "en_US.utf8")
   
   ;; Assuming /dev/sdX is the target hard disk, and "my-root" is
   ;; the label of the target root file system.
-  (bootloader (bootloader-configuration
-               (bootloader grub-bootloader)
-               (target "/dev/hd2s1")))
-  
+  (bootloader (grub-configuration (device "/dev/hd2")))
+
   (kernel gnumach)
   
   (file-systems (cons (file-system
