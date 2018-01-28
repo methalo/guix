@@ -35,6 +35,7 @@
   #:use-module (gnu packages bdw-gc)
   #:use-module (gnu packages gawk)
   #:use-module (gnu packages gperf)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages flex)
