@@ -188,8 +188,11 @@ without requiring the source code to be rewritten.")
                                    (string-append bash "/bin/bash")
                                    "bash"))
                              '((string-append bash "/bin/bash")))))))
-                %standard-phases)))
-
+                %standard-phases)
+      ,@(if (hurd-triplet? (or (%current-system)
+                               (%current-target-system)))
+            '(#:tests? #f)
+            '())))
    (native-search-paths
     (list (search-path-specification
            (variable "GUILE_LOAD_PATH")
@@ -233,6 +236,17 @@ without requiring the source code to be rewritten.")
                                   (find-files "prebuilt" "\\.go$")))))
     (properties '((timeout . 72000)               ;20 hours
                   (max-silent-time . 10800)))     ;3 hours (needed on ARM)
+    (arguments
+     `(#:configure-flags
+       (list
+        ,@(if (hurd-triplet? (or (%current-system)
+                                 (%current-target-system)))
+              '("--disable-largefile")
+              '()))
+       ,@(if (hurd-triplet? (or (%current-system)
+                                (%current-target-system)))
+             '(#:tests? #f)
+             '())))
     (native-search-paths
      (list (search-path-specification
             (variable "GUILE_LOAD_PATH")
