@@ -247,7 +247,7 @@ You have been warned.  Thanks for being so brave.
           ;; Start udev so that useful device nodes are available.
           ;; Use device-mapper rules for cryptsetup & co; enable the CRDA for
           ;; regulations-compliant WiFi access.
-          (udev-service #:rules (list lvm2 crda))
+;          (udev-service #:rules (list lvm2 crda))
 
           ;; Add the 'cow-store' service, which users have to start manually
           ;; since it takes the installation directory as an argument.
@@ -331,11 +331,11 @@ Use Alt-F2 for documentation.
     (packages (cons* (canonical-package glibc) ;for 'tzselect' & co.
                      parted gptfdisk ddrescue
                      grub                  ;mostly so xrefs to its manual work
-                     cryptsetup
+;                     cryptsetup
                      mdadm
                      dosfstools         ;mkfs.fat, for the UEFI boot partition
                      btrfs-progs
-                     wireless-tools iw wpa-supplicant-minimal iproute
+;                     wireless-tools iw wpa-supplicant-minimal iproute
                      ;; XXX: We used to have GNU fdisk here, but as of version
                      ;; 2.0.0a, that pulls Guile 1.8, which takes unreasonable
                      ;; space; furthermore util-linux's fdisk is already
