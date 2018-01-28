@@ -780,7 +780,7 @@ listed in OS.  The C library expects to find it under
        (store-fs -> (operating-system-store-file-system os))
        (label ->    (kernel->grub-label (operating-system-kernel os)))
        (kernel ->   (operating-system-kernel-file os))
-       (initrd      (operating-system-initrd-file os))
+;       (initrd      (operating-system-initrd-file os))
        (root-device -> (if (eq? 'uuid (file-system-title root-fs))
                            (uuid->string (file-system-device root-fs))
                            (file-system-device root-fs)))
@@ -792,14 +792,16 @@ listed in OS.  The C library expects to find it under
                            (device-mount-point
                             (file-system-mount-point store-fs))
 
-                           (linux kernel)
+;                           (linux kernel)
+                           (gnumach kernel)
                            (linux-arguments
                             (cons* (string-append "--root=" root-device)
                                    #~(string-append "--system=" #$system)
                                    #~(string-append "--load=" #$system
                                                     "/boot")
                                    (operating-system-kernel-arguments os)))
-                           (initrd initrd)))))
+;                           (initrd initrd)
+                           ))))
     (grub-configuration-file (operating-system-bootloader os) entries
                              #:old-entries old-entries)))
 
@@ -814,7 +816,8 @@ device in a <menu-entry>."
 (define (operating-system-parameters-file os)
   "Return a file that describes the boot parameters of OS.  The primary use of
 this file is the reconstruction of GRUB menu entries for old configurations."
-  (mlet %store-monad ((initrd   (operating-system-initrd-file os))
+  (mlet %store-monad (
+;                      (initrd   (operating-system-initrd-file os))
                       (root ->  (operating-system-root-file-system os))
                       (store -> (operating-system-store-file-system os))
                       (label -> (kernel->grub-label
@@ -827,7 +830,7 @@ this file is the reconstruction of GRUB menu entries for old configurations."
                    (kernel #$(operating-system-kernel-file os))
                    (kernel-arguments
                     #$(operating-system-kernel-arguments os))
-                   (initrd #$initrd)
+;                   (initrd #$initrd)
                    (store
                     (device #$(grub-device store))
                     (mount-point #$(file-system-mount-point store))))
@@ -861,7 +864,8 @@ this file is the reconstruction of GRUB menu entries for old configurations."
   (match (read port)
     (('boot-parameters ('version 0)
                        ('label label) ('root-device root)
-                       ('kernel linux)
+;                       ('kernel linux)
+                       ('kernel gnumach)
                        rest ...)
      (boot-parameters
       (label label)
