@@ -233,8 +233,9 @@ without requiring the source code to be rewritten.")
               ;; Remove the pre-built object files.  Instead, build everything
               ;; from source, at the expense of significantly longer build
               ;; times (almost 3 hours on a 4-core Intel i5).
-              (snippet '(for-each delete-file
-                                  (find-files "prebuilt" "\\.go$")))))
+;              (snippet '(for-each delete-file
+;                                  (find-files "prebuilt" "\\.go$")))
+              ))
     (properties '((timeout . 72000)               ;20 hours
                   (max-silent-time . 10800)))     ;3 hours (needed on ARM)
     (arguments
