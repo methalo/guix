@@ -40,18 +40,19 @@
       ;; proceeds and fails, unsurprisingly.
       #:tests? ,(not (%current-target-system))
 
-      #:phases (alist-cons-before
-                'check 'pre-check
-                (lambda* (#:key inputs #:allow-other-keys)
-                  ;; Fix references to /bin/sh.
-                  (let ((bash (assoc-ref inputs "bash")))
-                    (for-each patch-shebang
-                              (find-files "tests" "\\.sh$"))
-                    (substitute* (find-files "tests"
-                                             "posix_spawn")
-                      (("/bin/sh")
-                       (format #f "~a/bin/sh" bash)))))
-                %standard-phases)))
+;      #:phases (alist-cons-before
+;                'check 'pre-check
+;                (lambda* (#:key inputs #:allow-other-keys)
+;                  ;; Fix references to /bin/sh.
+;                  (let ((bash (assoc-ref inputs "bash")))
+;                    (for-each patch-shebang
+;                              (find-files "tests" "\\.sh$"))
+;                    (substitute* (find-files "tests"
+;                                             "posix_spawn")
+;                      (("/bin/sh")
+;                       (format #f "~a/bin/sh" bash)))))
+;                %standard-phases)
+      ))
    (synopsis "Macro processor")
    (description
     "GNU M4 is an implementation of the M4 macro language, which features
