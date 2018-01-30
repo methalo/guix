@@ -195,7 +195,8 @@ living in the same process.")
                "debug"
                "doc"))                            ;4.1 MiB of man pages
     (native-inputs
-     `(("net-tools" ,net-tools)
+     `(
+;       ("net-tools" ,net-tools)
        ("pkg-config" ,pkg-config)
        ("which" ,which)))
     (inputs
