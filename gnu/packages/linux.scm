@@ -580,10 +580,12 @@ block devices, UUIDs, TTYs, and many other tools.")
               (sha256
                (base32
                 "1m57w6jmry84njd5sgk5afycbglql0al80grx027kwqqcfw5mmkf"))
-              (patches (search-patches "procps-watch-hostname-max.patch"))))
+              (patches
+               (search-patches "procps-watch-hostname-max.patch"))))
     (build-system gnu-build-system)
     (arguments
-     '(#:modules ((guix build utils)
+     '(#:validate-runpath? #f
+       #:modules ((guix build utils)
                   (guix build gnu-build-system)
                   (srfi srfi-1)
                   (srfi srfi-26))
