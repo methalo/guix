@@ -53,7 +53,8 @@
              ("readline" ,readline)
              ("zlib" ,zlib)))
    (arguments
-    `(,@(if (hurd-triplet? (or (%current-system)
+    `(
+      ,@(if (hurd-triplet? (or (%current-system)
                                (%current-target-system)))
             '(#:tests? #f)
             '())
