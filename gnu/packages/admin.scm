@@ -303,7 +303,9 @@ client and server, a telnet client and server, and an rsh client and server.")
      '(;; Assume System V `setpgrp (void)', which is the default on GNU
        ;; variants (`AC_FUNC_SETPGRP' is not cross-compilation capable.)
        #:configure-flags
-       '("--with-libpam" "ac_cv_func_setpgrp_void=yes")
+       '(
+;         "--with-libpam"
+         "ac_cv_func_setpgrp_void=yes")
 
        #:phases
        (modify-phases %standard-phases
