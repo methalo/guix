@@ -1093,7 +1093,7 @@ nodist_bootstrap_aarch64_linux_DATA =					\
 nodist_bootstrap_mips64el_linux_DATA =					\
   %D%/packages/bootstrap/mips64el-linux/guile-2.0.9.tar.xz
 nodist_bootstrap_i586_gnu_DATA =					\
-  %D%/packages/bootstrap/i586-gnu/guile-2.0.14.tar.xz
+  %D%/packages/bootstrap/i586-gnu/guile-2.0.12.tar.xz
 
 # Those files must remain executable, so they remain executable once
 # imported into the store.
