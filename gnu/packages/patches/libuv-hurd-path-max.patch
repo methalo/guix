@@ -1,0 +1,27 @@
+From ec94106e435cbb33eebaa7a4463d89085143a11e Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Mon, 5 Jun 2017 18:46:06 -0500
+Subject: [PATCH] libuv-hurd-path-max.
+
+---
+ src/unix/fs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/unix/fs.c b/src/unix/fs.c
+index f9513ea5..edd22d28 100644
+--- a/src/unix/fs.c
++++ b/src/unix/fs.c
+@@ -46,6 +46,10 @@
+ #include <utime.h>
+ #include <poll.h>
+ 
++#ifndef PATH_MAX
++#define PATH_MAX 4096
++#endif
++
+ #if defined(__DragonFly__)        ||                                      \
+     defined(__FreeBSD__)          ||                                      \
+     defined(__FreeBSD_kernel_)    ||                                      \
+-- 
+2.12.0
+
