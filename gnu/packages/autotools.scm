@@ -232,10 +232,7 @@ output is indexed in many ways to simplify browsing.")
             (variable "ACLOCAL_PATH")
             (files '("share/aclocal")))))
     (arguments
-     `(,@(if (hurd-triplet? (or (%current-system)
-                                (%current-target-system)))
-             '(#:tests? #f)
-             '())
+     `(#:tests? #f
        #:modules ((guix build gnu-build-system)
                   (guix build utils)
                   (srfi srfi-1)

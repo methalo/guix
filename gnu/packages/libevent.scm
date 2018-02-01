@@ -116,7 +116,7 @@ programs.")
 (define-public libuv
   (package
     (name "libuv")
-    (version "1.11.0")
+    (version "1.17.0")
     (source (origin
               (method url-fetch)
               (uri (string-append "https://github.com/libuv/libuv/archive/v"
@@ -124,7 +124,9 @@ programs.")
               (file-name (string-append name "-" version ".tar.gz"))
               (sha256
                (base32
-                "0yhw86011l2dg2prms0d86szygrix4pxpgnyzs7iljy2xk3fxivf"))))
+                "0z5lxy2kn9hwws5p9i8yws0aky0phq0dbdkv3qrqr6zcrkbjya67"))
+              (patches (search-patches
+                        "libuv-hurd-path-max.patch"))))
     (build-system gnu-build-system)
     (arguments
      '(#:phases (alist-cons-after
