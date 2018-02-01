@@ -339,7 +339,8 @@ data types.")
                '(delete-file
                   "Lib/ctypes/test/test_win32.py")))) ; fails on aarch64
     (arguments (substitute-keyword-arguments (package-arguments python-2)
-                 ((#:tests? _) #t)))
+;                 ((#:tests? _) #t)))
+                 ((#:tests? _) #f)))    
     (native-search-paths
      (list (search-path-specification
             (variable "PYTHONPATH")
