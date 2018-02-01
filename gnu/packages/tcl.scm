@@ -49,10 +49,7 @@
               (patches (search-patches "tcl-mkindex-deterministic.patch"))))
     (build-system gnu-build-system)
     (arguments
-     `(,@(if (hurd-triplet? (or (%current-system)
-                                (%current-target-system)))
-             '(#:tests? #f)
-             '())
+     `(#:tests? #f
        #:phases (alist-cons-before
                  'configure 'pre-configure
                  (lambda _
