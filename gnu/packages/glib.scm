@@ -168,7 +168,8 @@ shared NFS home directories.")
       ("bash" ,bash)
       ("tzdata" ,tzdata-2017a)))                  ; for tests/gdatetime.c
    (arguments
-    `(,@(if (hurd-triplet? (or (%current-system)
+    `(
+      ,@(if (hurd-triplet? (or (%current-system)
                                (%current-target-system)))
             '(#:tests? #f)
             '())
