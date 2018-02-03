@@ -136,7 +136,8 @@ MODULES and taken from LINUX."
 
 (define* (raw-initrd file-systems
                       #:key
-                      (linux linux-libre)
+;                      (linux linux-libre)
+                      (hurd gnumach)
                       (linux-modules '())
                       (mapped-devices '())
                       (helper-packages '())
@@ -222,7 +223,8 @@ FILE-SYSTEMS."
 
 (define* (base-initrd file-systems
                       #:key
-                      (linux linux-libre)
+;                      (linux linux-libre)
+                      (hurd gnumach)
                       (mapped-devices '())
                       qemu-networking?
                       volatile-root?
@@ -263,40 +265,42 @@ loaded at boot time in the order in which they appear."
 
   (define linux-modules
     ;; Modules added to the initrd and loaded from the initrd.
-    `("ahci"                                  ;for SATA controllers
-      "usb-storage" "uas"                     ;for the installation image etc.
-      "usbhid" "hid-generic" "hid-apple"      ;keyboards during early boot
-      "dm-crypt" "xts" "serpent_generic" "wp512" ;for encrypted root partitions
-      "nvme"                                     ;for new SSD NVMe devices
-      ,@(if (string-match "^(x86_64|i[3-6]86)-" (%current-system))
-            '("pata_acpi" "pata_atiixp"    ;for ATA controllers
-              "isci")                      ;for SAS controllers like Intel C602
-            '())
-      ,@(if (or virtio? qemu-networking?)
-            virtio-modules
-            '())
-      ,@(if (find (file-system-type-predicate "cifs") file-systems)
-            cifs-modules
-            '())
-      ,@(if (find (file-system-type-predicate "9p") file-systems)
-            virtio-9p-modules
-            '())
-      ,@(if (find (file-system-type-predicate "vfat") file-systems)
-            '("nls_iso8859-1")
-            '())
-      ,@(if (find (file-system-type-predicate "btrfs") file-systems)
-            '("btrfs")
-            '())
-      ,@(if volatile-root?
-            '("fuse")
-            '())
+    `(
+;      "ahci"                                  ;for SATA controllers
+;      "usb-storage" "uas"                     ;for the installation image etc.
+;      "usbhid" "hid-generic" "hid-apple"      ;keyboards during early boot
+;      "dm-crypt" "xts" "serpent_generic" "wp512" ;for encrypted root partitions
+;      "nvme"                                     ;for new SSD NVMe devices
+;      ,@(if (string-match "^(x86_64|i[3-6]86)-" (%current-system))
+;            '("pata_acpi" "pata_atiixp"    ;for ATA controllers
+;              "isci")                      ;for SAS controllers like Intel C602
+;            '())
+;      ,@(if (or virtio? qemu-networking?)
+;            virtio-modules
+;            '())
+;      ,@(if (find (file-system-type-predicate "cifs") file-systems)
+;            cifs-modules
+;            '())
+;      ,@(if (find (file-system-type-predicate "9p") file-systems)
+;            virtio-9p-modules
+;            '())
+;      ,@(if (find (file-system-type-predicate "vfat") file-systems)
+;            '("nls_iso8859-1")
+;            '())
+;      ,@(if (find (file-system-type-predicate "btrfs") file-systems)
+;            '("btrfs")
+;            '())
+;      ,@(if volatile-root?
+;            '("fuse")
+;            '())
       ,@extra-modules))
 
   (define helper-packages
     (file-system-packages file-systems #:volatile-root? volatile-root?))
 
   (raw-initrd file-systems
-              #:linux linux
+;              #:linux linux
+              #:hurd hurd
               #:linux-modules linux-modules
               #:mapped-devices mapped-devices
               #:helper-packages helper-packages

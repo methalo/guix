@@ -133,11 +133,11 @@
                     (default '()))                ; list of gexps/strings
   (bootloader operating-system-bootloader)        ; <grub-configuration>
 
-  (initrd operating-system-initrd                 ; (list fs) -> M derivation
-          (default base-initrd))
+;  (initrd operating-system-initrd                 ; (list fs) -> M derivation
+;          (default base-initrd))
   (firmware operating-system-firmware             ; list of packages
-            (default %base-firmware))
-
+;            (default %base-firmware))
+            (default '()))
   (host-name operating-system-host-name)          ; string
   (hosts-file operating-system-hosts-file         ; file-like | #f
               (default #f))
@@ -277,11 +277,11 @@ value of the SYSTEM-SERVICE-TYPE service."
         (return `(("locale" ,locale)))
         (mlet %store-monad
             ((kernel  ->  (operating-system-kernel os))
-             (initrd      (operating-system-initrd-file os))
+;             (initrd      (operating-system-initrd-file os))
              (params      (operating-system-parameters-file os)))
           (return `(("kernel" ,kernel)
                     ("parameters" ,params)
-                    ("initrd" ,initrd)
+;                    ("initrd" ,initrd)
                     ("locale" ,locale)))))))      ;used by libc
 
 (define* (essential-services os #:key container?)
@@ -347,10 +347,10 @@ explicitly appear in OS."
 ;;; /etc.
 ;;;
 
-(define %base-firmware
-  ;; Firmware usable by default.
-  (list ath9k-htc-firmware
-        openfwwf-firmware))
+;(define %base-firmware
+;  ;; Firmware usable by default.
+;  (list ath9k-htc-firmware
+;        openfwwf-firmware))
 
 (define %base-packages
   ;; Default set of packages globally visible.  It should include anything
@@ -630,7 +630,8 @@ use 'plain-file' instead~%")
           (file-append inetutils "/bin/ping")
           (file-append inetutils "/bin/ping6")
           (file-append sudo "/bin/sudo")
-          (file-append fuse "/bin/fusermount"))))
+;          (file-append fuse "/bin/fusermount")
+          )))
 
 (define %sudoers-specification
   ;; Default /etc/sudoers contents: 'root' and all members of the 'wheel'

@@ -91,11 +91,11 @@
                      ;; determine the root file system when it's a RAID
                      ;; device.  Failing to do that, 'grub-probe' silently
                      ;; fails if 'mdadm' is not in $PATH.
-                     (substitute* "grub-core/osdep/linux/getroot.c"
-                       (("argv\\[0\\] = \"mdadm\"")
-                        (string-append "argv[0] = \""
-                                       (assoc-ref inputs "mdadm")
-                                       "/sbin/mdadm\"")))
+;                     (substitute* "grub-core/osdep/linux/getroot.c"
+;                       (("argv\\[0\\] = \"mdadm\"")
+;                        (string-append "argv[0] = \""
+;                                       (assoc-ref inputs "mdadm")
+;                                       "/sbin/mdadm\"")))
 
                      ;; Make the font visible.
                      (copy-file (assoc-ref inputs "unifont") "unifont.bdf.gz")
