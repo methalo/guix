@@ -49,7 +49,6 @@
              (sha256
               (base32
                "1h064qkirvhd3a2s9dklii127mhcksfvlbyqzzz08100fizlp8wr"))
-;             (patches (search-patches "cmake-fix-tests.patch"))
              (modules '((guix build utils)))
              (snippet
               '(begin
@@ -68,10 +67,11 @@
                    #t)))))
     (build-system gnu-build-system)
     (arguments
-     `(#:test-target "test"
-       #:tests? #f
+     `(#:tests? #f
+       #:test-target "test"
        #:phases
        (modify-phases %standard-phases
+;		      (delete 'check)
          (add-before 'configure 'patch-bin-sh
            (lambda _
            ;; Replace "/bin/sh" by the right path in... a lot of
@@ -124,7 +124,8 @@
              ;; Run tests in parallel.
              (setenv "CTEST_PARALLEL_LEVEL"
                      (number->string (parallel-job-count)))
-             #t)))))
+             #t))
+	 )))
     (inputs
      `(("file"       ,file)
        ("curl"       ,curl)
