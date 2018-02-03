@@ -1,0 +1,26 @@
+From b11bdc25377a07cd1252bf126575be2ecdde904f Mon Sep 17 00:00:00 2001
+From: rennes <rennes@openmailbox.org>
+Date: Fri, 24 Nov 2017 21:30:36 -0600
+Subject: [PATCH] curl-delete-wait.h
+
+---
+ lib/curl_ntlm_wb.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/lib/curl_ntlm_wb.c b/lib/curl_ntlm_wb.c
+index 03f47a3a5..9aa5fbe57 100644
+--- a/lib/curl_ntlm_wb.c
++++ b/lib/curl_ntlm_wb.c
+@@ -34,9 +34,6 @@
+ 
+ #define DEBUG_ME 0
+ 
+-#ifdef HAVE_SYS_WAIT_H
+-#include <sys/wait.h>
+-#endif
+ #ifdef HAVE_SIGNAL_H
+ #include <signal.h>
+ #endif
+-- 
+2.14.1
+
