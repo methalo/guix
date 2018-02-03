@@ -13,9 +13,9 @@
   (kernel gnumach)
   
   (file-systems (cons (file-system
-                        (device "my-root")
+                        (device "root")
                         (title 'label)
-                        (mount-point "/guix")
+                        (mount-point "/")
                         (type "ext2"))
                       %base-file-systems))
   
@@ -27,4 +27,8 @@
                %base-user-accounts))
 
   (packages (cons* 
-	     %base-packages-hurd)))
+	     %base-packages-hurd))
+
+  (services (cons*
+                   %base-services-hurd))
+  )
