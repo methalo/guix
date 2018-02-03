@@ -93,7 +93,11 @@ command-line arguments, multiple languages, and so on.")
    (build-system gnu-build-system)
    (native-inputs `(("perl" ,perl)))             ;some of the tests require it
    (arguments
-    `(#:phases
+    `(,@(if (hurd-triplet? (or (%current-system)
+                               (%current-target-system)))
+            '(#:tests? #f)
+            '())
+      #:phases
       (modify-phases %standard-phases
         (add-after 'install 'fix-egrep-and-fgrep
           ;; Patch 'egrep' and 'fgrep' to execute 'grep' via its
