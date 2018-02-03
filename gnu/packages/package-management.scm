@@ -82,7 +82,8 @@
                "1jgy5mlygmhxdqhrp6vr8w83ndcm5mk64xfravr8l2d7hq8y40b2"))))
     (build-system gnu-build-system)
     (arguments
-     `(#:configure-flags (list
+     `(#:tests? #f
+       #:configure-flags (list
                           "--with-courage"
                           "--localstatedir=/var"
                           "--sysconfdir=/etc"
@@ -94,7 +95,6 @@
                                                     "libgcrypt")))
        #:parallel-tests? #f           ;work around <http://bugs.gnu.org/21097>
        #:phases (modify-phases %standard-phases
-                  (delete 'check)
                   (add-before
                    'configure 'copy-bootstrap-guile
                    (lambda* (#:key system inputs #:allow-other-keys)
