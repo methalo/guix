@@ -398,7 +398,8 @@ explicitly appear in OS."
 ;         nano
 ;         lsof                                 ;for Guix's 'list-runtime-roots'
 ;         pciutils usbutils
-;         util-linux inetutils isc-dhcp
+   util-linux
+;   inetutils isc-dhcp
 
          ;; wireless-tools is deprecated in favor of iw, but it's still what
          ;; many people are familiar with, so keep it around.
