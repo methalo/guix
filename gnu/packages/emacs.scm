@@ -173,7 +173,7 @@
        ("libxml2" ,libxml2)
        ("libice" ,libice)
        ("libsm" ,libsm)
-       ("alsa-lib" ,alsa-lib)
+;       ("alsa-lib" ,alsa-lib)
        ("dbus" ,dbus)
 
        ;; multilingualization support

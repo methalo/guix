@@ -30,6 +30,7 @@
   #:use-module (guix ui)
   #:use-module (gnu packages base)
   #:use-module (gnu packages bash)
+  #:use-module (gnu packages emacs)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages admin)
   #:use-module (gnu packages linux)
@@ -393,7 +394,8 @@ explicitly appear in OS."
   ;; required for basic administrator tasks.
   (cons* ;procps
          ;psmisc
-   which less  ; for build GNU/Hurd.
+   which less
+   emacs-no-x
 ;   zile
 ;         nano
 ;         lsof                                 ;for Guix's 'list-runtime-roots'
