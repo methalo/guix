@@ -44,12 +44,12 @@
              (patch-flags '("-p0"))))
     (build-system gnu-build-system)
     (arguments
-     `(#:configure-flags
-       (list
-        ,@(if (hurd-triplet? (or (%current-system)
-                                 (%current-target-system)))
-              '("apr_cv_struct_ipmreq=no")
-              '()))
+     `(#:configure-flags '("apr_cv_struct_ipmreq=no")
+;       (list
+;        ,@(if (hurd-triplet? (or (%current-system)
+;                                 (%current-target-system)))
+;              '("apr_cv_struct_ipmreq=no")
+;              '()))
        ,@(if (hurd-triplet? (or (%current-system)
                                 (%current-target-system)))
              '(#:tests? #f)
