@@ -70,10 +70,12 @@
                    (default #f))
   (device-mount-point menu-entry-device-mount-point
                    (default #f))
-  (linux           menu-entry-linux)
+;  (linux           menu-entry-linux)
+  (gnumach           menu-entry-linux)
   (linux-arguments menu-entry-linux-arguments
                    (default '()))          ; list of string-valued gexps
-  (initrd          menu-entry-initrd))     ; file name of the initrd as a gexp
+;  (initrd          menu-entry-initrd)
+  )     ; file name of the initrd as a gexp
 
 
 ;;;

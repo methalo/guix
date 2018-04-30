@@ -74,7 +74,7 @@
                            #:key
                            output
                            (qemu (qemu-command)) (memory-size 512)
-                           linux initrd
+;                           linux initrd
                            make-disk-image?
                            single-file-output?
                            target-arm32?
@@ -149,7 +149,7 @@ the #:references-graphs parameter of 'derivation'."
                   (string-append "local,id=xchg_dev,path=xchg"
                                  ",security_model=none,mount_tag=xchg")
                   "-kernel" linux
-                  "-initrd" initrd
+;                  "-initrd" initrd
                   "-append" (string-append "console=ttyS0 --load="
                                            builder)
                   (append

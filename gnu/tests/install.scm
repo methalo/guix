@@ -565,11 +565,11 @@ where /gnu lives on a separate partition.")
                  (bootloader grub-bootloader)
                  (target "/dev/vdb")))
     (kernel-arguments '("console=ttyS0"))
-    (initrd (lambda (file-systems . rest)
-              ;; Add a kernel module for RAID-0 (aka. "stripe").
-              (apply base-initrd file-systems
-                     #:extra-modules '("raid0")
-                     rest)))
+;    (initrd (lambda (file-systems . rest)
+;              ;; Add a kernel module for RAID-0 (aka. "stripe").
+;              (apply base-initrd file-systems
+;                     #:extra-modules '("raid0")
+;                     rest)))
     (mapped-devices (list (mapped-device
                            (source (list "/dev/vda2" "/dev/vda3"))
                            (target "/dev/md0")

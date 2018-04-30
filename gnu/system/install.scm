@@ -383,11 +383,11 @@ You have been warned.  Thanks for being so brave.\x1b[0m
                  (bootloader u-boot-beaglebone-black-bootloader)
                  (target "/dev/sda")))
     (kernel linux-libre)
-    (initrd (lambda (fs . rest)
-              (apply base-initrd fs
-                     ;; This module is required to mount the sd card.
-                     #:extra-modules (list "omap_hsmmc")
-                     rest)))
+;    (initrd (lambda (fs . rest)
+;              (apply base-initrd fs
+;                     ;; This module is required to mount the sd card.
+;                     #:extra-modules (list "omap_hsmmc")
+;                     rest)))
     (services (append
                ;; mingetty does not work on serial lines.
                ;; Use agetty with board-specific serial parameters.

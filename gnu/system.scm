@@ -44,6 +44,7 @@
   #:use-module (gnu packages texinfo)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages firmware)
+  #:use-module (gnu packages hurd)
   #:use-module (gnu services)
   #:use-module (gnu services shepherd)
   #:use-module (gnu services base)
@@ -229,7 +230,8 @@ directly by the user."
   (store-mount-point boot-parameters-store-mount-point)
   (kernel           boot-parameters-kernel)
   (kernel-arguments boot-parameters-kernel-arguments)
-  (initrd           boot-parameters-initrd))
+;  (initrd           boot-parameters-initrd)
+  )
 
 (define (ensure-not-/dev device)
   "If DEVICE starts with a slash, return #f.  This is meant to filter out
@@ -277,12 +279,12 @@ file system labels."
          ((_ args) args)
          (#f       '())))                         ;the old format
 
-      (initrd
-       (match (assq 'initrd rest)
-         (('initrd ('string-append directory file)) ;the old format
-          (string-append directory file))
-         (('initrd (? string? file))
-          file)))
+;      (initrd
+;       (match (assq 'initrd rest)
+;         (('initrd ('string-append directory file)) ;the old format
+;          (string-append directory file))
+;         (('initrd (? string? file))
+;          file)))
 
       (store-device
        ;; Linux device names like "/dev/sda1" are not suitable GRUB device
@@ -328,9 +330,11 @@ The object has its kernel-arguments extended in order to make it bootable."
    (label (boot-parameters-label conf))
    (device (boot-parameters-store-device conf))
    (device-mount-point (boot-parameters-store-mount-point conf))
-   (linux (boot-parameters-kernel conf))
+;   (linux (boot-parameters-kernel conf))
+   (gnumach (boot-parameters-kernel conf))
    (linux-arguments (boot-parameters-kernel-arguments conf))
-   (initrd (boot-parameters-initrd conf))))
+;   (initrd (boot-parameters-initrd conf))
+   ))
 
 
 
@@ -426,15 +430,17 @@ OS."
 value of the SYSTEM-SERVICE-TYPE service."
   (let ((locale (operating-system-locale-directory os)))
     (with-monad %store-monad
-      (if container?
+      (
+       if container?
           (return `(("locale" ,locale)))
           (mlet %store-monad
               ((kernel  ->  (operating-system-kernel os))
-               (initrd      (operating-system-initrd-file os))
-               (params      (operating-system-boot-parameters-file os)))
+;               (initrd      (operating-system-initrd-file os))
+;               (params      (operating-system-boot-parameters-file os))
+               )
             (return `(("kernel" ,kernel)
-                      ("parameters" ,params)
-                      ("initrd" ,initrd)
+;                      ("parameters" ,params)
+;                      ("initrd" ,initrd)
                       ("locale" ,locale))))))))   ;used by libc
 
 (define* (essential-services os #:key container?)
@@ -452,8 +458,10 @@ a container or that of a \"bare metal\" system."
          (swaps     (swap-services os))
          (procs     (service user-processes-service-type))
          (host-name (host-name-service (operating-system-host-name os)))
+;         (entries   (operating-system-directory-base-entries
+;                     os #:container? container?)))
          (entries   (operating-system-directory-base-entries
-                     os #:container? container?)))
+                     os)))
     (cons* (service system-service-type entries)
            %boot-service
 
@@ -492,8 +500,10 @@ a container or that of a \"bare metal\" system."
 (define* (operating-system-services os #:key container?)
   "Return all the services of OS, including \"internal\" services that do not
 explicitly appear in OS."
+;  (append (operating-system-user-services os)
+;          (essential-services os #:container? container?)))
   (append (operating-system-user-services os)
-          (essential-services os #:container? container?)))
+          (essential-services os)))
 
 
 ;;;
@@ -957,7 +967,8 @@ device in a <menu-entry>."
 of OS.  SYSTEM.DRV is either a derivation or #f.  If it's a derivation, adds
 kernel arguments for that derivation to <boot-parameters>."
   (mlet* %store-monad
-      ((initrd (operating-system-initrd-file os))
+      (
+;       (initrd (operating-system-initrd-file os))
        (store -> (operating-system-store-file-system os))
        (bootloader  -> (bootloader-configuration-bootloader
                         (operating-system-bootloader os)))
@@ -971,9 +982,10 @@ kernel arguments for that derivation to <boot-parameters>."
               (if system.drv
                 (operating-system-kernel-arguments os system.drv root-device)
                 (operating-system-user-kernel-arguments os)))
-             (initrd initrd)
+;             (initrd initrd)
              (bootloader-name bootloader-name)
-             (store-device (ensure-not-/dev (fs->boot-device store)))
+;             (store-device (ensure-not-/dev (fs->boot-device store)))
+             (store-device (fs->boot-device store))
              (store-mount-point (file-system-mount-point store))))))
 
 (define (device->sexp device)
@@ -1001,13 +1013,14 @@ being stored into the \"parameters\" file)."
                  #~(boot-parameters
                     (version 0)
                     (label #$(boot-parameters-label params))
-                    (root-device
-                     #$(device->sexp
-                        (boot-parameters-root-device params)))
+;                    (root-device
+;                     #$(device->sexp
+;                        (boot-parameters-root-device params)))
+                    (root-device #$(file-system-device root))
                     (kernel #$(boot-parameters-kernel params))
                     (kernel-arguments
                      #$(boot-parameters-kernel-arguments params))
-                    (initrd #$(boot-parameters-initrd params))
+;                    (initrd #$(boot-parameters-initrd params))
                     (bootloader-name #$(boot-parameters-bootloader-name params))
                     (store
                      (device

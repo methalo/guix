@@ -106,7 +106,7 @@
                                              #:key
                                              (system (%current-system))
                                              (linux linux-libre)
-                                             initrd
+;                                             initrd
                                              (qemu qemu-minimal)
                                              (env-vars '())
                                              (guile-for-build
@@ -139,12 +139,13 @@ made available under the /xchg CIFS share."
        (loader       (gexp->file "linux-vm-loader"
                                  #~(primitive-load #$user-builder)))
        (coreutils -> (canonical-package coreutils))
-       (initrd       (if initrd                   ; use the default initrd?
-                         (return initrd)
-                         (base-initrd %linux-vm-file-systems
-                                      #:linux linux
-                                      #:virtio? #t
-                                      #:qemu-networking? #t))))
+;       (initrd       (if initrd                   ; use the default initrd?
+;                         (return initrd)
+;                         (base-initrd %linux-vm-file-systems
+;                                      #:linux linux
+;                                      #:virtio? #t
+;                                      #:qemu-networking? #t)))
+       )
 
     (define builder
       ;; Code that launches the VM that evaluates EXP.
@@ -157,7 +158,7 @@ made available under the /xchg CIFS share."
             (let* ((inputs  '#$(list qemu coreutils))
                    (linux   (string-append #$linux "/"
                                            #$(system-linux-image-file-name)))
-                   (initrd  (string-append #$initrd "/initrd"))
+;                   (initrd  (string-append #$initrd "/initrd"))
                    (loader  #$loader)
                    (graphs  '#$(match references-graphs
                                  (((graph-files . _) ...) graph-files)
@@ -171,7 +172,8 @@ made available under the /xchg CIFS share."
 
               (load-in-linux-vm loader
                                 #:output #$output
-                                #:linux linux #:initrd initrd
+                                #:linux linux
+;                                #:initrd initrd
                                 #:memory-size #$memory-size
                                 #:make-disk-image? #$make-disk-image?
                                 #:single-file-output? #$single-file-output?
@@ -439,11 +441,11 @@ to USB sticks meant to be read-only."
               ;; Since this is meant to be used on real hardware, don't
               ;; install QEMU networking or anything like that.  Assume USB
               ;; mass storage devices (usb-storage.ko) are available.
-              (initrd (lambda (file-systems . rest)
-                        (apply (operating-system-initrd os)
-                               file-systems
-                               #:volatile-root? #t
-                               rest)))
+;              (initrd (lambda (file-systems . rest)
+;                        (apply (operating-system-initrd os)
+;                               file-systems
+;                               #:volatile-root? #t
+;                               rest)))
 
               (bootloader (if (string=? "iso9660" file-system-type)
                               (bootloader-configuration
@@ -505,11 +507,11 @@ of the GNU system as described by OS."
 
   (let ((os (operating-system (inherit os)
               ;; Use an initrd with the whole QEMU shebang.
-              (initrd (lambda (file-systems . rest)
-                        (apply (operating-system-initrd os)
-                               file-systems
-                               #:virtio? #t
-                               rest)))
+;              (initrd (lambda (file-systems . rest)
+;                        (apply (operating-system-initrd os)
+;                               file-systems
+;                               #:virtio? #t
+;                               rest)))
 
               ;; Force our own root file system.
               (file-systems (cons (file-system
@@ -598,12 +600,12 @@ environment with the store shared with the host.  MAPPINGS is a list of
                   (bootloader grub-bootloader)
                   (target "/dev/vda")))
 
-    (initrd (lambda (file-systems . rest)
-              (apply (operating-system-initrd os)
-                     file-systems
-                     #:volatile-root? #t
-                     #:virtio? #t
-                     rest)))
+;    (initrd (lambda (file-systems . rest)
+;              (apply (operating-system-initrd os)
+;                     file-systems
+;                     #:volatile-root? #t
+;                     #:virtio? #t
+;                     rest)))
 
     ;; Disable swap.
     (swap-devices '())
@@ -711,7 +713,7 @@ it is mostly useful when FULL-BOOT?  is true."
               #$@(if full-boot?
                      #~()
                      #~("-kernel" #$(operating-system-kernel-file os)
-                        "-initrd" #$(file-append os-drv "/initrd")
+;                        "-initrd" #$(file-append os-drv "/initrd")
                         (format #f "-append ~s"
                                 (string-join #$kernel-arguments " "))))
               #$@(common-qemu-options image

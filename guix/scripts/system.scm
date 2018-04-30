@@ -745,7 +745,8 @@ output when building a system derivation, such as a disk image."
           (if package
               (package->derivation package)
               (return #f))))
-       (bootcfg  (if (eq? 'container action)
+       (bootcfg  (
+                  if (eq? 'container action)
                      (return #f)
                      (operating-system-bootcfg
                       os
