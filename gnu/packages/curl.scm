@@ -50,7 +50,8 @@
                                  version ".tar.lzma"))
              (sha256
               (base32
-               "1qpm4qj5llr8f5bbl185gpjqknj47nzhvxd8j1vm6asgk3sly4jb"))))
+               "1qpm4qj5llr8f5bbl185gpjqknj47nzhvxd8j1vm6asgk3sly4jb"))
+             (patches (search-patches "curl-delete-wait.h.patch"))))
    (build-system gnu-build-system)
    (outputs '("out"
               "doc"))                             ;1.2 MiB of man3 pages
