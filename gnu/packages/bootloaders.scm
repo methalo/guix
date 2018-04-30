@@ -87,11 +87,11 @@
                      ;; determine the root file system when it's a RAID
                      ;; device.  Failing to do that, 'grub-probe' silently
                      ;; fails if 'mdadm' is not in $PATH.
-                     (substitute* "grub-core/osdep/linux/getroot.c"
-                       (("argv\\[0\\] = \"mdadm\"")
-                        (string-append "argv[0] = \""
-                                       (assoc-ref inputs "mdadm")
-                                       "/sbin/mdadm\"")))
+;                     (substitute* "grub-core/osdep/linux/getroot.c"
+;                       (("argv\\[0\\] = \"mdadm\"")
+;                        (string-append "argv[0] = \""
+;                                       (assoc-ref inputs "mdadm")
+;                                       "/sbin/mdadm\"")))
 
                      ;; Make the font visible.
                      (copy-file (assoc-ref inputs "unifont") "unifont.bdf.gz")
@@ -108,17 +108,17 @@
        ;; Disable tests on ARM and AARCH64 platforms.
        #:tests? ,(not (any (cute string-prefix? <> (or (%current-target-system)
                                                        (%current-system)))
-                           '("arm" "aarch64")))))
+                           '("arm" "aarch64" "i586")))))
     (inputs
      `(("gettext" ,gettext-minimal)
 
        ;; Depend on LVM2 for libdevmapper, used by 'grub-probe' and
        ;; 'grub-install' to recognize mapped devices (LUKS, etc.)
-       ("lvm2" ,lvm2)
+;       ("lvm2" ,lvm2)
 
        ;; Depend on mdadm, which is invoked by 'grub-probe' and 'grub-install'
        ;; to determine whether the root file system is RAID.
-       ("mdadm" ,mdadm)
+;       ("mdadm" ,mdadm)
 
        ("freetype" ,freetype)
        ;; ("libusb" ,libusb)
@@ -136,8 +136,8 @@
 
        ;; Dependencies for the test suite.  The "real" QEMU is needed here,
        ;; because several targets are used.
-       ("parted" ,parted)
-       ("qemu" ,qemu-minimal)
+;       ("parted" ,parted)
+;       ("qemu" ,qemu-minimal)
        ("xorriso" ,xorriso)))
     (home-page "https://www.gnu.org/software/grub/")
     (synopsis "GRand Unified Boot loader")
