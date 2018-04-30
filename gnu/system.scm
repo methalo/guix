@@ -800,7 +800,8 @@ use 'plain-file' instead~%")
           (file-append inetutils "/bin/ping")
           (file-append inetutils "/bin/ping6")
           (file-append sudo "/bin/sudo")
-          (file-append fuse "/bin/fusermount"))))
+;          (file-append fuse "/bin/fusermount")
+          )))
 
 (define %sudoers-specification
   ;; Default /etc/sudoers contents: 'root' and all members of the 'wheel'
