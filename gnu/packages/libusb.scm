@@ -44,6 +44,7 @@
   #:use-module (gnu packages mp3)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages python)
+  #:use-module (gnu packages tls)
   #:use-module (gnu packages xiph))
 
 (define-public libusb
@@ -343,6 +344,43 @@ Apple Property List files in binary or XML.")
     (description "This package provides a client library to multiplex
 connections from and to iOS devices by connecting to a socket provided by a
 @code{usbmuxd} daemon.")
+    (license license:lgpl2.1+)))
+
+(define-public libimobiledevice
+  (package
+    (name "libimobiledevice")
+    (version "1.2.0")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append "http://www.libimobiledevice.org/downloads/"
+                                  "libimobiledevice-" version ".tar.bz2"))
+              (sha256
+               (base32
+                "0dqhy4qwj30mw8pwckvjmgnj1qqrh6p8c6jknmhvylshhzh0ssvq"))))
+    (build-system gnu-build-system)
+    (arguments
+     `(#:configure-flags
+       (list (string-append "PYTHON_LDFLAGS=-L"
+                            (assoc-ref %build-inputs "python")
+                            "/lib -lpython3.6m"))))
+    (propagated-inputs
+     `(("openssl" ,openssl)
+       ("libusbmuxd" ,libusbmuxd)))
+    (inputs
+     `(("libplist" ,libplist)
+       ("python" ,python)))
+    (native-inputs
+     `(("pkg-config" ,pkg-config)
+       ("python-cython" ,python-cython)
+       ("libtool" ,libtool)))
+    (home-page "http://www.libimobiledevice.org/")
+    (synopsis "Protocol library and tools to communicate with Apple devices")
+    (description "libimobiledevice is a software library that talks the
+protocols to support Apple devices.  It allows other software to easily access
+the device's filesystem, retrieve information about the device and it's
+internals, backup/restore the device, manage installed applications, retrieve
+addressbook/calendars/notes and bookmarks and (using libgpod) synchronize
+music and video to the device.")
     (license license:lgpl2.1+)))
 
 (define-public libmtp
