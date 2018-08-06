@@ -2412,7 +2412,7 @@ library.")
 (define-public glib-networking
   (package
     (name "glib-networking")
-    (version "2.54.1")
+    (version "2.56.1")
     (source (origin
               (method url-fetch)
               (uri (string-append "mirror://gnome/sources/glib-networking/"
@@ -2420,22 +2420,22 @@ library.")
                                   name "-" version ".tar.xz"))
               (sha256
                (base32
-                "0bq16m9nh3gcz9x2fvygr0iwxd2pxcbrm3lj3kihsnh1afv8g9za"))
+                "1j1myqlrzwam986b8sq2bq2wrcylipvbsv44n7vdrlipl3hb0iyz"))
               (patches
                (search-patches "glib-networking-ssl-cert-file.patch"))))
-    (build-system gnu-build-system)
+    (build-system meson-build-system)
     (arguments
      `(#:configure-flags
-       '("--with-ca-certificates=/etc/ssl/certs/ca-certificates.crt")
+       '("-Dca_certificates_path=/etc/ssl/certs/ca-certificates.crt")
        #:phases
        (modify-phases %standard-phases
-         (add-before 'configure 'patch-giomoduledir
-           ;; Install GIO modules into $out/lib/gio/modules.
+         ;; The configured location of ca-certificates.crt is unavailable in
+         ;; the build environment.
+         (add-after 'unpack 'trust-that-the-certs-will-be-there
            (lambda _
-             (substitute* "configure"
-               (("GIO_MODULE_DIR=.*")
-                (string-append "GIO_MODULE_DIR=" %output
-                               "/lib/gio/modules\n")))
+             (substitute* "meson.build"
+               (("assert\\(res\\.returncode\\(\\) == 0" m)
+                (string-append "#" m)))
              #t))
          (add-before 'check 'use-empty-ssl-cert-file
            (lambda _
@@ -2445,9 +2445,11 @@ library.")
              #t)))))
     (native-inputs
      `(("pkg-config" ,pkg-config)
-       ("intltool" ,intltool)))
+       ("gettext" ,gettext-minimal)
+       ("glib" ,glib "bin")))
     (inputs
      `(("glib" ,glib)
+       ("libproxy" ,libproxy)
        ("gnutls" ,gnutls)
        ("gsettings-desktop-schemas" ,gsettings-desktop-schemas)
        ("p11-kit" ,p11-kit)))
