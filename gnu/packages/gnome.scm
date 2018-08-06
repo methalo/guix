@@ -1929,7 +1929,7 @@ Hints specification (EWMH).")
 (define-public gnumeric
   (package
     (name "gnumeric")
-    (version "1.12.36")
+    (version "1.12.41")
     (source (origin
               (method url-fetch)
               (uri (string-append "mirror://gnome/sources/" name "/"
@@ -1937,7 +1937,7 @@ Hints specification (EWMH).")
                                   name "-" version ".tar.xz"))
               (sha256
                (base32
-                "0j28qpbz9a9p80x27kcwxl5n1hf36nn2fa7dxwrbhcdx4rgy5grw"))))
+                "0sarasmvx9rqdxj5wpb03ziyzd2w1k8cpn4mf99himxnnxjydxk6"))))
     (build-system glib-or-gtk-build-system)
     (arguments
      `(;; The gnumeric developers don't worry much about failing tests.
@@ -1945,8 +1945,7 @@ Hints specification (EWMH).")
        #:tests? #f
        #:phases
        (modify-phases %standard-phases
-         (add-before
-          'configure 'pre-conf
+         (add-after 'unpack 'fix-build-system
            (lambda* (#:key outputs #:allow-other-keys)
              ;; Make install tries to write into the directory of goffice
              ;; I am informed that this only affects the possibility to embed a
@@ -1956,7 +1955,15 @@ Hints specification (EWMH).")
                (("^GOFFICE_PLUGINS_DIR=.*")
                 (string-append "GOFFICE_PLUGINS_DIR="
                                (assoc-ref outputs "out")
-                               "/goffice/plugins"))))))))
+                               "/goffice/plugins\n")))
+
+             ;; The relative paths point outside of the build container.
+             (substitute* "plugins/perl-loader/Makefile.in"
+               (("\\$\\(srcdir\\)/../../gnumeric-config.h")
+                "$(top_srcdir)/../build/gnumeric-config.h")
+               (("\\$\\(srcdir\\)/../../src/")
+                "$(top_srcdir)/src/"))
+             #t)))))
     (inputs
      `(("glib" ,glib)
        ("gtk+" ,gtk+)
