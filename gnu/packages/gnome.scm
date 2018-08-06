@@ -1236,7 +1236,9 @@ dealing with different structured file formats.")
                 "0ay9himvw1l1swcf3h1312d2iqzfl65kpbfgiyfykgvq7cydvx6g"))))
     (build-system gnu-build-system)
     (arguments
-     `(#:phases
+     `(#:configure-flags
+       (list "--enable-vala") ; needed for e.g. gnome-mines
+       #:phases
        (modify-phases %standard-phases
          (add-before 'configure 'pre-configure
            (lambda* (#:key inputs #:allow-other-keys)
@@ -1267,6 +1269,7 @@ dealing with different structured file formats.")
              #t)))))
     (native-inputs
      `(("pkg-config" ,pkg-config)
+       ("vala" ,vala)
        ("glib" ,glib "bin")                               ; glib-mkenums, etc.
        ("gobject-introspection" ,gobject-introspection))) ; g-ir-compiler, etc.
     (inputs
