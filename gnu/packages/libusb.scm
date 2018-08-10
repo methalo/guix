@@ -362,7 +362,9 @@ connections from and to iOS devices by connecting to a socket provided by a
      `(#:configure-flags
        (list (string-append "PYTHON_LDFLAGS=-L"
                             (assoc-ref %build-inputs "python")
-                            "/lib -lpython3.6m"))))
+                            "/lib -lpython"
+                            ,(version-major+minor
+                              (package-version python)) "m"))))
     (propagated-inputs
      `(("openssl" ,openssl)
        ("libusbmuxd" ,libusbmuxd)))
