@@ -65,6 +65,7 @@
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages avahi)
   #:use-module (gnu packages base)
+  #:use-module (gnu packages bash)
   #:use-module (gnu packages bison)
   #:use-module (gnu packages build-tools)
   #:use-module (gnu packages calendar)
@@ -2273,7 +2274,7 @@ and RDP protocols.")
 (define-public dconf
   (package
     (name "dconf")
-    (version "0.28.0")
+    (version "0.30.1")
     (source (origin
               (method url-fetch)
               (uri (string-append
@@ -2282,14 +2283,15 @@ and RDP protocols.")
                     name "-" version ".tar.xz"))
               (sha256
                (base32
-                "0hn7v6769xabqz7kvyb2hfm19h46z1whkair7ff752zmbs3b7lv1"))))
+                "1dq2dn7qmxr4fxzx9wnag89ck24gxq17p2n4gl81h4w8qdy3m6jl"))))
     (build-system meson-build-system)
     (propagated-inputs
      ;; In Requires of dconf.pc.
      `(("glib" ,glib)))
     (inputs
      `(("gtk+" ,gtk+)
-       ("dbus" ,dbus)))
+       ("dbus" ,dbus)
+       ("bash-completion" ,bash-completion)))
     (native-inputs
      `(("libxslt" ,libxslt)                     ;for xsltproc
        ("libxml2" ,libxml2)                     ;for XML_CATALOG_FILES
