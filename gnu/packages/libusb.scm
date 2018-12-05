@@ -366,11 +366,12 @@ connections from and to iOS devices by connecting to a socket provided by a
                             ,(version-major+minor
                               (package-version python)) "m"))))
     (propagated-inputs
-     `(("openssl" ,openssl)
+     `(("libplist" ,libplist) ; Listed in "Requires" field
+       ;; These two are listed in "Requires.private":
+       ("openssl" ,openssl)
        ("libusbmuxd" ,libusbmuxd)))
     (inputs
-     `(("libplist" ,libplist)
-       ("python" ,python)))
+     `(("python" ,python)))
     (native-inputs
      `(("pkg-config" ,pkg-config)
        ("python-cython" ,python-cython)
