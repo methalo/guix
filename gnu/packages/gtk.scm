@@ -620,7 +620,7 @@ is part of the GNOME accessibility project.")
 (define-public at-spi2-atk
   (package
    (name "at-spi2-atk")
-   (version "2.26.2")
+   (version "2.30.0")
    (source (origin
             (method url-fetch)
             (uri (string-append "mirror://gnome/sources/" name "/"
@@ -628,23 +628,25 @@ is part of the GNOME accessibility project.")
                                 name "-" version ".tar.xz"))
             (sha256
              (base32
-              "0vkan52ab9vrkknnv8y4f1cspk8x7xd10qx92xk9ys71p851z2b1"))))
-   (build-system gnu-build-system)
+              "16lav8k3mcxf2hblfh95zcw41glmb92wwwwljrf10yza0h85gqg2"))))
+   (build-system meson-build-system)
    (arguments
     '(#:phases
       (modify-phases %standard-phases
         (replace 'check
-                 ;; Run test-suite under a dbus session.
-                 (lambda _
-                   (setenv "DBUS_FATAL_WARNINGS" "0")
-                   (invoke "dbus-launch" "make" "check"))))))
+          ;; Run test-suite under a dbus session.
+          (lambda _
+            (setenv "DBUS_FATAL_WARNINGS" "0")
+            (invoke "dbus-launch" "ninja" "test")
+            #t)))))
    (propagated-inputs
     `(("at-spi2-core" ,at-spi2-core))) ; required by atk-bridge-2.0.pc
    (inputs
     `(("atk" ,atk)))
    (native-inputs
     `(("dbus" ,dbus) ; for testing
-      ("pkg-config" ,pkg-config)))
+      ("pkg-config" ,pkg-config)
+      ("libxml2" ,libxml2)))
    (synopsis "Assistive Technology Service Provider Interface, ATK bindings")
    (description
     "The Assistive Technology Service Provider Interface
