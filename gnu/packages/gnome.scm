@@ -5292,7 +5292,7 @@ to virtual private networks (VPNs) via OpenVPN.")
 (define-public network-manager-applet
   (package
     (name "network-manager-applet")
-    (version "1.8.14")
+    (version "1.8.18")
     (source (origin
               (method url-fetch)
               (uri (string-append "mirror://gnome/sources/" name "/"
@@ -5300,7 +5300,7 @@ to virtual private networks (VPNs) via OpenVPN.")
                                   name "-" version ".tar.xz"))
               (sha256
                (base32
-                "1js0i2kwfklahsn77qgxzdscy33drrlym3mrj1qhlw0zf8ri56ya"))))
+                "0y31g0lxr93370xi74hbpvcy9m81n5wdkdhq8xy2nqp0y4219p13"))))
     (build-system glib-or-gtk-build-system)
     (arguments '(#:configure-flags '("--disable-migration")))
     (native-inputs
@@ -5319,6 +5319,7 @@ to virtual private networks (VPNs) via OpenVPN.")
        ("libsecret" ,libsecret)
        ("libselinux" ,libselinux)
        ("jansson" ,jansson) ; for team support
+       ("mobile-broadband-provider-info" ,mobile-broadband-provider-info)
        ("modem-manager" ,modem-manager)))
     (synopsis "Applet for managing network connections")
     (home-page "https://www.gnome.org/projects/NetworkManager/")
