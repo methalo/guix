@@ -2417,7 +2417,7 @@ library.")
 (define-public glib-networking
   (package
     (name "glib-networking")
-    (version "2.56.1")
+    (version "2.58.0")
     (source (origin
               (method url-fetch)
               (uri (string-append "mirror://gnome/sources/glib-networking/"
@@ -2425,23 +2425,11 @@ library.")
                                   name "-" version ".tar.xz"))
               (sha256
                (base32
-                "1j1myqlrzwam986b8sq2bq2wrcylipvbsv44n7vdrlipl3hb0iyz"))
-              (patches
-               (search-patches "glib-networking-ssl-cert-file.patch"))))
+                "0s006gs9nsq6mg31spqha1jffzmp6qjh10y27h0fxf1iw1ah5ymx"))))
     (build-system meson-build-system)
     (arguments
-     `(#:configure-flags
-       '("-Dca_certificates_path=/etc/ssl/certs/ca-certificates.crt")
-       #:phases
+     `(#:phases
        (modify-phases %standard-phases
-         ;; The configured location of ca-certificates.crt is unavailable in
-         ;; the build environment.
-         (add-after 'unpack 'trust-that-the-certs-will-be-there
-           (lambda _
-             (substitute* "meson.build"
-               (("assert\\(res\\.returncode\\(\\) == 0" m)
-                (string-append "#" m)))
-             #t))
          (add-before 'check 'use-empty-ssl-cert-file
            (lambda _
              ;; The ca-certificates.crt is not available in the build
