@@ -5414,6 +5414,10 @@ libxml2.")
          ;; script. It provides a generic one if --enable-gdm-xsession is set.
          "--enable-gdm-xsession"
 
+         ;; Use '/etc/environment' for locale settings instead of the
+         ;; systemd-specific '/etc/locale.conf'.
+         "--with-lang-file=/etc/environment"
+
          ,(string-append "--with-udevdir="
                          (assoc-ref %outputs "out") "/lib/udev")
 
