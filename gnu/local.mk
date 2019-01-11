@@ -1305,6 +1305,7 @@ bootstrap_i686_linuxdir = $(bootstrapdir)/i686-linux
 bootstrap_armhf_linuxdir = $(bootstrapdir)/armhf-linux
 bootstrap_aarch64_linuxdir = $(bootstrapdir)/aarch64-linux
 bootstrap_mips64el_linuxdir = $(bootstrapdir)/mips64el-linux
+bootstrap_i586_gnudir = $(bootstrapdir)/i586-gnu
 
 dist_bootstrap_x86_64_linux_DATA =		\
   %D%/packages/bootstrap/x86_64-linux/bash	\
@@ -1335,6 +1336,12 @@ dist_bootstrap_mips64el_linux_DATA =		\
   %D%/packages/bootstrap/mips64el-linux/mkdir	\
   %D%/packages/bootstrap/mips64el-linux/tar	\
   %D%/packages/bootstrap/mips64el-linux/xz
+
+dist_bootstrap_i586_gnu_DATA =		\
+  %D%/packages/bootstrap/i586-gnu/bash	\
+  %D%/packages/bootstrap/i586-gnu/mkdir	\
+  %D%/packages/bootstrap/i586-gnu/tar	\
+  %D%/packages/bootstrap/i586-gnu/xz
 
 # Those files must remain executable, so they remain executable once
 # imported into the store.

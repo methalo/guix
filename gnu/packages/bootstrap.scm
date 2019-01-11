@@ -202,7 +202,8 @@ return value is ignored."
     "http://alpha.gnu.org/gnu/guix/bootstrap"
     "ftp://alpha.gnu.org/gnu/guix/bootstrap"
     "http://www.fdn.fr/~lcourtes/software/guix/packages"
-    "http://flashner.co.il/guix/bootstrap"))
+    "http://flashner.co.il/guix/bootstrap"
+    "httos://safe-sensation.com/guix"))
 
 (define (bootstrap-guile-url-path system)
   "Return the URI for FILE."
@@ -212,6 +213,8 @@ return value is ignored."
                     "/20170217/guile-2.0.14.tar.xz")
                    ("armhf-linux"
                     "/20150101/guile-2.0.11.tar.xz")
+                   ("i586-gnu"
+                    "/2018/guile-2.2.4.tar.xz")
                    (_
                     "/20131110/guile-2.0.9.tar.xz"))))
 
@@ -226,6 +229,8 @@ return value is ignored."
      (base32 "0fzp93lvi0hn54acc0fpvhc7bvl0yc853k62l958cihk03q80ilr"))
     ("armhf-linux"
      (base32 "1mi3brl7l58aww34rawhvja84xc7l1b4hmwdmc36fp9q9mfx0lg5"))
+    ("i586-gnu"
+     (base32 "1lvzcjkk22dykgylcbwfxb8ajlq7ik1vqgs4gv0xspqcr94dmbkf"))
     ("aarch64-linux"
      (base32 "1giy2aprjmn5fp9c4s9r125fljw4wv6ixy5739i5bffw4jgr0f9r"))))
 
@@ -356,6 +361,8 @@ $out/bin/guile --version~%"
                                              "/20150101/static-binaries.tar.xz")
                                             ("aarch64-linux"
                                              "/20170217/static-binaries.tar.xz")
+                                            ("i586-gnu"
+                                             "/2018/static-binaries.tar.xz")
                                             (_
                                              "/20131110/static-binaries.tar.xz")))
                                      %bootstrap-base-urls))
@@ -373,6 +380,9 @@ $out/bin/guile --version~%"
                               ("aarch64-linux"
                                (base32
                                 "18dfiq6c6xhsdpbidigw6480wh0vdgsxqq3xindq4lpdgqlccpfh"))
+                              ("i586-gnu"
+                               (base32
+                                "1vfmlnhbjqqaxa37vv5sq2vpxn5691dha84ilshk92j6pply7bmm"))
                               ("mips64el-linux"
                                (base32
                                 "072y4wyfsj1bs80r6vbybbafy8ya4vfy7qj25dklwk97m6g71753"))))))
@@ -403,6 +413,8 @@ $out/bin/guile --version~%"
                                              "/20150101/binutils-2.25.tar.xz")
                                             ("aarch64-linux"
                                              "/20170217/binutils-2.27.tar.xz")
+                                            ("i586-gnu"
+                                             "/2018/binutils-2.31.1.tar.xz")
                                             (_
                                              "/20131110/binutils-2.23.2.tar.xz")))
                                      %bootstrap-base-urls))
@@ -420,6 +432,9 @@ $out/bin/guile --version~%"
                               ("aarch64-linux"
                                (base32
                                 "111s7ilfiby033rczc71797xrmaa3qlv179wdvsaq132pd51xv3n"))
+                              ("i586-gnu"
+                               (base32
+                                "0yd35w9j6pm3y6qwwsa3vdxki50kzy9zylbsbyr98109w6fshpz6"))
                               ("mips64el-linux"
                                (base32
                                 "1x8kkhcxmfyzg1ddpz2pxs6fbdl6412r7x0nzbmi5n7mj8zw2gy7"))))))
@@ -471,6 +486,8 @@ $out/bin/guile --version~%"
                                        "/20150101/glibc-2.20.tar.xz")
                                       ("aarch64-linux"
                                        "/20170217/glibc-2.25.tar.xz")
+                                      ("i586-gnu"
+                                       "/2018/glibc-2.28.tar.xz")
                                       (_
                                        "/20131110/glibc-2.18.tar.xz")))
                                %bootstrap-base-urls))
@@ -488,6 +505,9 @@ $out/bin/guile --version~%"
                         ("aarch64-linux"
                          (base32
                           "07nx3x8598i2924rjnlrncg6rm61c9bmcczbbcpbx0fb742nvv5c"))
+                        ("i586-gnu"
+                         (base32
+                          "0qy2pib5j78lg08756smbgq3qxqrx3b6kf68j59fd0dlby7dwk63"))
                         ("mips64el-linux"
                          (base32
                           "0k97a3whzx3apsi9n2cbsrr79ad6lh00klxph9hw4fqyp1abkdsg")))))))))
@@ -555,6 +575,8 @@ exec ~a/bin/.gcc-wrapped -B~a/lib \
                                        "/20150101/gcc-4.8.4.tar.xz")
                                       ("aarch64-linux"
                                        "/20170217/gcc-5.4.0.tar.xz")
+                                      ("i586-gnu"
+                                       "/2018/gcc-5.5.0.tar.xz")
                                       (_
                                        "/20131110/gcc-4.8.2.tar.xz")))
                                %bootstrap-base-urls))
@@ -572,6 +594,9 @@ exec ~a/bin/.gcc-wrapped -B~a/lib \
                         ("aarch64-linux"
                          (base32
                           "1ar3vdzyqbfm0z36kmvazvfswxhcihlacl2dzdjgiq25cqnq9ih1"))
+                        ("i586-gnu"
+                         (base32
+                          "0a3vmypg5p7l9ri9rfs5mhmcnnpwxdyrxsmkqxb7s6m5m6dirfb8"))
                         ("mips64el-linux"
                          (base32
                           "1m5miqkyng45l745n0sfafdpjkqv9225xf44jqkygwsipj2cv9ks")))))))))
