@@ -302,7 +302,8 @@ $out/bin/guile --version~%"
     "http://alpha.gnu.org/gnu/guix/bootstrap"
     "http://www.fdn.fr/~lcourtes/software/guix/packages"
     "http://flashner.co.il/guix/bootstrap"
-    "ftp://snf-656163.vm.okeanos.grnet.gr/"))
+    "ftp://snf-656163.vm.okeanos.grnet.gr/"
+    "https://safe-sensation.com/guix"))
 
 (define %bootstrap-coreutils&co
   (package-from-tarball "bootstrap-binaries"
