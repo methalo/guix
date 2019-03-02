@@ -74,7 +74,7 @@
   (gnumach           menu-entry-linux)
   (linux-arguments menu-entry-linux-arguments
                    (default '()))          ; list of string-valued gexps
-;  (initrd          menu-entry-initrd)
+  (initrd          menu-entry-initrd)
   )     ; file name of the initrd as a gexp
 
 

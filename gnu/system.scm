@@ -230,7 +230,7 @@ directly by the user."
   (store-mount-point boot-parameters-store-mount-point)
   (kernel           boot-parameters-kernel)
   (kernel-arguments boot-parameters-kernel-arguments)
-;  (initrd           boot-parameters-initrd)
+  (initrd           boot-parameters-initrd)
   )
 
 (define (ensure-not-/dev device)
@@ -279,12 +279,12 @@ file system labels."
          ((_ args) args)
          (#f       '())))                         ;the old format
 
-;      (initrd
-;       (match (assq 'initrd rest)
-;         (('initrd ('string-append directory file)) ;the old format
-;          (string-append directory file))
-;         (('initrd (? string? file))
-;          file)))
+      (initrd
+       (match (assq 'initrd rest)
+         (('initrd ('string-append directory file)) ;the old format
+          (string-append directory file))
+         (('initrd (? string? file))
+          file)))
 
       (store-device
        ;; Linux device names like "/dev/sda1" are not suitable GRUB device
@@ -333,7 +333,7 @@ The object has its kernel-arguments extended in order to make it bootable."
 ;   (linux (boot-parameters-kernel conf))
    (gnumach (boot-parameters-kernel conf))
    (linux-arguments (boot-parameters-kernel-arguments conf))
-;   (initrd (boot-parameters-initrd conf))
+   (initrd (boot-parameters-initrd conf))
    ))
 
 
@@ -435,12 +435,12 @@ value of the SYSTEM-SERVICE-TYPE service."
           (return `(("locale" ,locale)))
           (mlet %store-monad
               ((kernel  ->  (operating-system-kernel os))
-;               (initrd      (operating-system-initrd-file os))
-;               (params      (operating-system-boot-parameters-file os))
+               (initrd      (operating-system-initrd-file os))
+               (params      (operating-system-boot-parameters-file os))
                )
             (return `(("kernel" ,kernel)
-;                      ("parameters" ,params)
-;                      ("initrd" ,initrd)
+                      ("parameters" ,params)
+                      ("initrd" ,initrd)
                       ("locale" ,locale))))))))   ;used by libc
 
 (define* (essential-services os #:key container?)
@@ -969,7 +969,7 @@ of OS.  SYSTEM.DRV is either a derivation or #f.  If it's a derivation, adds
 kernel arguments for that derivation to <boot-parameters>."
   (mlet* %store-monad
       (
-;       (initrd (operating-system-initrd-file os))
+       (initrd (operating-system-initrd-file os))
        (store -> (operating-system-store-file-system os))
        (bootloader  -> (bootloader-configuration-bootloader
                         (operating-system-bootloader os)))
@@ -983,9 +983,9 @@ kernel arguments for that derivation to <boot-parameters>."
               (if system.drv
                 (operating-system-kernel-arguments os system.drv root-device)
                 (operating-system-user-kernel-arguments os)))
-;             (initrd initrd)
+             (initrd initrd)
              (bootloader-name bootloader-name)
-;             (store-device (ensure-not-/dev (fs->boot-device store)))
+             (store-device (ensure-not-/dev (fs->boot-device store)))
              (store-device (fs->boot-device store))
              (store-mount-point (file-system-mount-point store))))))
 
@@ -1014,14 +1014,14 @@ being stored into the \"parameters\" file)."
                  #~(boot-parameters
                     (version 0)
                     (label #$(boot-parameters-label params))
-;                    (root-device
-;                     #$(device->sexp
-;                        (boot-parameters-root-device params)))
+                    (root-device
+                     #$(device->sexp
+                        (boot-parameters-root-device params)))
                     (root-device #$(file-system-device root))
                     (kernel #$(boot-parameters-kernel params))
                     (kernel-arguments
                      #$(boot-parameters-kernel-arguments params))
-;                    (initrd #$(boot-parameters-initrd params))
+                    (initrd #$(boot-parameters-initrd params))
                     (bootloader-name #$(boot-parameters-bootloader-name params))
                     (store
                      (device
