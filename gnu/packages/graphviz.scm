@@ -90,7 +90,7 @@
        ("gd" ,gd)                                 ; FIXME: Our GD is too old
        ("guile" ,guile-2.0)                       ;Guile bindings
        ("swig" ,swig)
-       ("pango" ,pango)
+;       ("pango" ,pango)
        ("fontconfig" ,fontconfig)
        ("freetype" ,freetype)
        ("libltdl" ,libltdl)

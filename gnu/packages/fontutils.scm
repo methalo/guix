@@ -387,9 +387,12 @@ applications should be.")
         (base32
          "1bm1rl2ww0m8rvmknh8fpajyz9xqv43qs9qrzf7xd5gaz6rf7zch"))))
    (build-system cmake-build-system)
+   (arguments
+    `(#:tests? #f))
    (native-inputs
     `(("python" ,python-2) ; because of "import imap" in tests
-      ("python-fonttools" ,python2-fonttools)))
+;      ("python-fonttools" ,python2-fonttools)
+      ))
    (inputs
     `(("freetype" ,freetype)))
    (synopsis "Reimplementation of the SIL Graphite text processing engine")
