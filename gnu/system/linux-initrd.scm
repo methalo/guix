@@ -314,7 +314,7 @@ loaded at boot time in the order in which they appear."
 
   (raw-initrd file-systems
               #:linux linux
-              #:linux-modules linux-modules
+;              #:linux-modules linux-modules
               #:mapped-devices mapped-devices
               #:helper-packages helper-packages
               #:qemu-networking? qemu-networking?
