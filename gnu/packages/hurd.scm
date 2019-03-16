@@ -256,7 +256,8 @@ Hurd-minimal package which are needed for both glibc and GCC.")
                 "1nw9gly0n7pyv3cpfm4mmxy4yccrx4g0lyrvd3vk2vil26jpbggw"))
               (patches (search-patches "hurd-fix-eth-multiplexer-dependency.patch"))))
     (arguments
-     `(#:phases
+     `(#:tests? #f ; no check target
+       #:phases
        (modify-phases %standard-phases
          (add-before 'build 'pre-build
                      (lambda _
