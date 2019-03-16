@@ -254,7 +254,9 @@ Hurd-minimal package which are needed for both glibc and GCC.")
               (sha256
                (base32
                 "1nw9gly0n7pyv3cpfm4mmxy4yccrx4g0lyrvd3vk2vil26jpbggw"))
-              (patches (search-patches "hurd-fix-eth-multiplexer-dependency.patch"))))
+              (patches (search-patches
+                        "hurd-fix-eth-multiplexer-dependency.patch"
+                        "hurd-libhurdutil-New-library.patch"))))
     (arguments
      `(#:tests? #f ; no check target
        #:phases
