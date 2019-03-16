@@ -315,7 +315,7 @@ accounts among ACCOUNTS+GROUPS."
   ;; there's a small window during which first-time logins could happen before
   ;; the home directory has been created.
   (list (shepherd-service
-         (requirement '(file-systems))
+;         (requirement '(file-systems))
          (provision '(user-homes))
          (modules '((gnu build activation)))
          (start (with-imported-modules (source-module-closure
