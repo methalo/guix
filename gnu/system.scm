@@ -153,8 +153,8 @@ booted from ROOT-DEVICE"
                     (default '()))                ; list of gexps/strings
   (bootloader operating-system-bootloader)        ; <bootloader-configuration>
 
-  (initrd operating-system-initrd                 ; (list fs) -> M derivation
-          (default base-initrd))
+;  (initrd operating-system-initrd                 ; (list fs) -> M derivation
+;          (default base-initrd))
   (firmware operating-system-firmware             ; list of packages
             (default %base-firmware))
 
@@ -270,10 +270,15 @@ file system labels."
 
       ;; In the past, we would store the directory name of the kernel instead
       ;; of the absolute file name of its image.  Detect that and correct it.
-      (kernel (if (string=? linux (direct-store-path linux))
-                  (string-append linux "/"
+;      (kernel (if (string=? linux (direct-store-path linux))
+;                  (string-append linux "/"
+;                                 (system-linux-image-file-name))
+;                  linux))
+
+      (kernel (if (string=? gnumach (direct-store-path gnumach))
+                  (string-append gnumach "/"
                                  (system-linux-image-file-name))
-                  linux))
+                  gnumach))
 
       (kernel-arguments
        (match (assq 'kernel-arguments rest)
@@ -495,8 +500,9 @@ a container or that of a \"bare metal\" system."
                    (if container?
                        '()
                        (list %linux-bare-metal-service
-                             (service firmware-service-type
-                                      (operating-system-firmware os))))))))
+;                             (service firmware-service-type
+;                                      (operating-system-firmware os))
+                             ))))))
 
 (define* (operating-system-services os #:key container?)
   "Return all the services of OS, including \"internal\" services that do not

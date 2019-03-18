@@ -91,7 +91,7 @@
             etc-directory
             setuid-program-service-type
             profile-service-type
-            firmware-service-type
+;            firmware-service-type
             gc-root-service-type
 
             %boot-service
@@ -572,21 +572,21 @@ FILES must be a list of name/file-like object pairs."
                 (compose concatenate)
                 (extend append)))
 
-(define (firmware->activation-gexp firmware)
-  "Return a gexp to make the packages listed in FIRMWARE loadable by the
-kernel."
-  (let ((directory (directory-union "firmware" firmware)))
-    ;; Tell the kernel where firmware is.
-    #~(activate-firmware (string-append #$directory "/lib/firmware"))))
+;(define (firmware->activation-gexp firmware)
+;  "Return a gexp to make the packages listed in FIRMWARE loadable by the
+;kernel."
+;  (let ((directory (directory-union "firmware" firmware)))
+;    ;; Tell the kernel where firmware is.
+;    #~(activate-firmware (string-append #$directory "/lib/firmware"))))
 
-(define firmware-service-type
-  ;; The service that collects firmware.
-  (service-type (name 'firmware)
-                (extensions
-                 (list (service-extension activation-service-type
-                                          firmware->activation-gexp)))
-                (compose concatenate)
-                (extend append)))
+;(define firmware-service-type
+;  ;; The service that collects firmware.
+;  (service-type (name 'firmware)
+;                (extensions
+;                 (list (service-extension activation-service-type
+;                                          firmware->activation-gexp)))
+;                (compose concatenate)
+;                (extend append)))
 
 (define (gc-roots->system-entry roots)
   "Return an entry in the system's output containing symlinks to ROOTS."

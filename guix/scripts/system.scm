@@ -730,7 +730,9 @@ output when building a system derivation, such as a disk image."
   (when (memq action '(init reconfigure))
     (when (zero? (getuid))
       (check-file-system-availability (operating-system-file-systems os)))
-    (check-mapped-devices (operating-system-mapped-devices os)))
+;    (check-mapped-devices (operating-system-mapped-devices os))
+    (operating-system-mapped-devices os)
+    )
 
   (mlet* %store-monad
       ((sys       (system-derivation-for-action os action
