@@ -731,7 +731,8 @@ with the Linux kernel.")
               (patches (search-patches "glibc-hurd-clock_t_centiseconds.patch"
                                        "glibc-versioned-locpath.patch"
                                        "glibc-locales.patch"
-                                       "glibc-clock_gettime_monotonic.patch"))))
+                                       "glibc-clock_gettime_monotonic.patch"
+                                       "glibc-magic-pid.diff"))))
 
     ;; Libc provides <hurd.h>, which includes a bunch of Hurd and Mach headers,
     ;; so both should be propagated.
