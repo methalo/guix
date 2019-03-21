@@ -266,7 +266,15 @@ Hurd-minimal package which are needed for both glibc and GCC.")
                        ;; Don't change the ownership of any file at this time.
                        (substitute* '("daemons/Makefile" "utils/Makefile")
                          (("-o root -m 4755") ""))
-                       #t)))
+                       #t))
+         (add-after 'install 'install-dist
+           ;; SETUP file is necesary to boot the first time.
+           (lambda* (#:key outputs #:allow-other-keys)
+             (let* ((out (assoc-ref outputs "out"))
+                    (dist (string-append out "/dist/SETUP")))
+               (mkdir-p (dirname dist))
+               (copy-file "release/SETUP" dist)
+               #t))))
        #:configure-flags (list (string-append "LDFLAGS=-Wl,-rpath="
                                               %output "/lib")
                           "--disable-ncursesw"
