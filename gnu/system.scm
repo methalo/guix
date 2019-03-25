@@ -567,8 +567,19 @@ explicitly appear in OS."
 (define %base-packages-hurd
   ;; Default set of packages globally visible.  It should include anything
   ;; required for basic administrator tasks.
-  (cons* procps which less zile nano
-         (@ (gnu packages admin) shadow)          ;for 'passwd'
+  (cons*
+; Remove to avoid Collision with Hurd package.
+;   procps
+   which less zile nano
+; Use hurd package instead.
+;         (@ (gnu packages admin) shadow)          ;for 'passwd'
+
+         ;; Required to do the link to /hurd, /lib
+         hurd
+         glibc
+
+         ;; Required to boot Hurd the first time.
+         inetutils
 
          man-db
          info-reader                     ;the standalone Info reader (no Perl)
