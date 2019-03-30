@@ -1,0 +1,33 @@
+From 0b15a40cb7d1852adba7aa85befd98307eded7ab Mon Sep 17 00:00:00 2001
+From: Rene <pacoon@protonmail.com>
+Date: Thu, 21 Mar 2019 16:39:02 -0600
+Subject: [PATCH 2/2] gnu: hurd: Add call to SETUP script.
+
+---
+ daemons/runsystem.sh | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/daemons/runsystem.sh b/daemons/runsystem.sh
+index 1fd1c9ae..b3acc7fd 100644
+--- a/daemons/runsystem.sh
++++ b/daemons/runsystem.sh
+@@ -69,6 +69,16 @@ if ! test -e /servers/socket/1 ; then
+   fi
+ fi
+ 
++# Execute SETUP file for the first time, to configure
++# passive translators.
++if [ -x "/SETUP" ]; then
++    echo "This is the first execution of the system."
++    echo "I'm going to setup everything and then reboot. Please wait..."
++    sleep 2
++    ./SETUP
++    exit 0
++fi
++
+ # We expect to be started by console-run, which gives us no arguments and
+ # puts FALLBACK_CONSOLE=file-name in the environment if our console is
+ # other than a normal /dev/console.
+-- 
+2.20.1
+

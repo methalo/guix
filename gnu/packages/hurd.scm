@@ -256,7 +256,8 @@ Hurd-minimal package which are needed for both glibc and GCC.")
                 "1nw9gly0n7pyv3cpfm4mmxy4yccrx4g0lyrvd3vk2vil26jpbggw"))
               (patches (search-patches
                         "hurd-fix-eth-multiplexer-dependency.patch"
-                        "hurd-libhurdutil-New-library.patch"))))
+                        "hurd-libhurdutil-New-library.patch" ; Remove next rebuild.
+                        "hurd-Add-call-to-SETUP-script.patch"))))
     (arguments
      `(#:tests? #f ; no check target
        #:phases
@@ -268,7 +269,7 @@ Hurd-minimal package which are needed for both glibc and GCC.")
                          (("-o root -m 4755") ""))
                        #t))
          (add-after 'install 'install-dist
-           ;; SETUP file is necesary to boot the first time.
+           ;; SETUP script is necesary to boot the first time.
            (lambda* (#:key outputs #:allow-other-keys)
              (let* ((out (assoc-ref outputs "out"))
                     (dist (string-append out "/dist/SETUP")))
