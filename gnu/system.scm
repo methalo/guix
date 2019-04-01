@@ -499,10 +499,10 @@ a container or that of a \"bare metal\" system."
                    ;; container.
                    (if container?
                        '()
-                       (list %linux-bare-metal-service
+;                       (list %linux-bare-metal-service
 ;                             (service firmware-service-type
-;                                      (operating-system-firmware os))
-                             ))))))
+;                                      (operating-system-firmware os)))
+                       '())))))
 
 (define* (operating-system-services os #:key container?)
   "Return all the services of OS, including \"internal\" services that do not
