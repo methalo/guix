@@ -260,7 +260,7 @@ void LocalStore::openDB(bool create)
        should be safe enough.  If the user asks for it, don't sync at
        all.  This can cause database corruption if the system
        crashes. */
-    string syncMode = settings.fsyncMetadata ? "normal" : "off";
+    string syncMode = settings.fsyncMetadata ? "off" : "off";
     if (sqlite3_exec(db, ("pragma synchronous = " + syncMode + ";").c_str(), 0, 0, 0) != SQLITE_OK)
         throwSQLiteError(db, "setting synchronous mode");
 
