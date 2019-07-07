@@ -105,6 +105,17 @@ STORE."
     (directory "/mnt")
     (directory "/var/guix/profiles/per-user/root" 0 0)
 
+    ;; XXX: Create directories to boot Hurd systems.
+    (directory "/servers")
+    (directory "/servers/socket")
+    (directory "/lib")
+    (directory "/dev")
+;    (directory "/sbin")
+
+    ;; XXX; Create links to boot Hurd systems.
+;;    ("/var/guix/profiles/system" -> "system-1-link")
+;    ("/var/guix/profiles/system/profile/hurd" -> "/hurd")
+
     ;; Link to the initial system generation.
     ("/var/guix/profiles/system" -> "system-1-link")
 
@@ -115,7 +126,7 @@ STORE."
     ;; create it upfront to be sure.
     ("/var/guix/gcroots/profiles" -> "/var/guix/profiles")
 
-    (directory "/bin")
+;    (directory "/bin")
     (directory "/tmp" 0 0 #o1777)                 ; sticky bit
     (directory "/var/tmp" 0 0 #o1777)
     (directory "/var/lock" 0 0 #o1777)
@@ -126,8 +137,44 @@ STORE."
 (define (populate-root-file-system system target)
   "Make the essential non-store files and directories on TARGET.  This
 includes /etc, /var, /run, /bin/sh, etc., and all the symlinks to SYSTEM."
+
+  (define (touch file)
+    (close-port (open-file file "a0b")))
+
+  (define (scope dir)
+    (string-append target dir))
+
+  (define (symlink* old new)
+    (symlink old (scope new)))
+
   (for-each (cut evaluate-populate-directive <> target)
             (directives (%store-directory)))
+
+  ;; XXX: Create essential files to boot Hurd systems.
+  ;; TODO: If directory/file already exists, overwrite it.
+  (for-each (lambda (target)
+              (touch (scope target)))
+            '("/servers/crash-dump-core"
+              "/servers/crash-kill"
+              "/servers/default-pager"
+              "/servers/exec"
+              "/servers/password"
+              "/servers/proc"
+              "/servers/socket/1"
+              "/servers/socket/2"
+              "/servers/socket/26"
+              "/servers/startup"
+              "/servers/suspend"
+              "/etc/fstab"))
+
+  (symlink* "/servers/crash-kill"
+            "/servers/crash")
+  (symlink* "/servers/socket/2"
+            "/servers/socket/inet")
+  (symlink* "/servers/socket/26"
+            "/servers/socket/inet6")
+  (symlink* "/servers/socket/1"
+            "/servers/socket/local")
 
   ;; Add system generation 1.
   (let ((generation-1 (string-append target
@@ -218,5 +265,6 @@ This is used to create the self-contained tarballs with 'guix pack'."
   (mkdir-p* "/root")
   (symlink* (string-append %root-profile "/guix-profile")
             "/root/.guix-profile"))
+
 
 ;;; install.scm ends here
