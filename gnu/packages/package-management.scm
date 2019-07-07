@@ -158,6 +158,7 @@
                         (define (boot-guile-version arch)
                           (cond ((string=? "armhf" arch)   "2.0.11")
                                 ((string=? "aarch64" arch) "2.0.14")
+                                ((string=? "i586" arch) "2.0.14")
                                 (else "2.0.9")))
 
                         (define (copy arch)
@@ -177,6 +178,7 @@
                         (copy "mips64el")
                         (copy "armhf")
                         (copy "aarch64")
+                        (copy "i586")
                         #t))
                     (add-after 'unpack 'disable-failing-tests
                       ;; XXX FIXME: These tests fail within the build container.
@@ -278,7 +280,11 @@
            ("boot-guile/aarch64"
             ,(boot-guile "aarch64"
                          (base32
-                          "1giy2aprjmn5fp9c4s9r125fljw4wv6ixy5739i5bffw4jgr0f9r"))))))
+                          "1giy2aprjmn5fp9c4s9r125fljw4wv6ixy5739i5bffw4jgr0f9r")))
+           ("boot-guile/i586"
+            ,(boot-guile "i586"
+                         (base32
+                          "17ifdr4067gz19awgjmdgmqlqscd51b823bkhpx66dpz4asmsnp2"))))))
       (propagated-inputs
        `(("gnutls" ,gnutls)
          ("guile-json" ,guile-json)
