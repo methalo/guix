@@ -51,6 +51,10 @@
   #:use-module (gnu services)
   #:use-module (gnu services shepherd)
   #:use-module (gnu services herd)
+  #:use-module (gnu packages admin)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages bash)
+  #:use-module (gnu packages hurd)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-11)
   #:use-module (srfi srfi-19)
@@ -697,6 +701,24 @@ and TARGET arguments."
                       (use-modules (gnu build bootloader)
                                    (guix build utils)
                                    (ice-9 binary-ports))
+                      ;; Create links for the Hurd systems.
+                      (symlink "/var/guix/profiles/system/profile/etc/login" "/guix/etc/login")
+                      (symlink "/var/guix/profiles/system/profile/etc/motd" "/guix/etc/motd")
+                      (symlink "/var/guix/profiles/system/profile/etc/ttys" "/guix/etc/ttys")
+                      (symlink (string-append #$gnumach "/boot/gnumach") "/guix/boot/gnumach")
+
+                      (symlink "/var/guix/profiles/system/profile/hurd" "/guix/hurd")
+                      (symlink "/var/guix/profiles/system/profile/dev/MAKEDEV" "/guix/dev/MAKEDEV")
+                      (symlink "/var/guix/profiles/system/profile/libexec" "/guix/libexec")
+                      (symlink "/var/guix/profiles/system/profile/lib/ld.so.1" "/guix/lib/ld.so.1")
+                      (symlink "/var/guix/profiles/system/profile/sbin" "/guix/sbin")
+                      (symlink "/var/guix/profiles/system/profile/bin" "/guix/bin")
+                      (copy-file (string-append #$hurd "/dist/SETUP") "/guix/SETUP")
+;                      (copy-file "/var/guix/profiles/system/profile/dist/SETUP" "/guix/SETUP")
+                      (chmod "/guix/SETUP" #o755)
+                      ;; Keep in this order; Review Colisions.
+;                      (symlink (string-append #$bash "/bin/sh") "/guix/bin/sh")
+
                       (#$installer #$bootloader #$device #$target))))))
 
 (define* (perform-action action os
