@@ -258,7 +258,11 @@ Hurd-minimal package which are needed for both glibc and GCC.")
                         "hurd-fix-eth-multiplexer-dependency.patch"
                         "hurd-libhurdutil-New-library.patch" ; Remove next rebuild.
                         "hurd-Add-call-to-SETUP-script.patch"
-                        "hurd-debian-rc.patch"))))
+                        "hurd-debian-rc.patch"
+                        "hurd-Customize-SETUP-script.patch"
+;                        "io-write-crash.patch"
+;                        "hurd-replace-init.patch"
+                       ))))
     (arguments
      `(#:tests? #f ; no check target
        #:phases

@@ -1,0 +1,43 @@
+From d211765c5077091bd567e5910505cce1d5c62fe0 Mon Sep 17 00:00:00 2001
+From: Rene <pacoon@protonmail.com>
+Date: Sun, 31 Mar 2019 19:22:43 -0600
+Subject: [PATCH] gnu: hurd: Customize SETUP script.
+
+---
+ release/SETUP | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/release/SETUP b/release/SETUP
+index 9860f03a..6f066ae6 100644
+--- a/release/SETUP
++++ b/release/SETUP
+@@ -28,9 +28,16 @@ fsysopts / --writable
+ /bin/settrans -c /servers/crash /hurd/crash
+ /bin/settrans -c /servers/password /hurd/password
+ 
++# Set up translators to allow create devices
++/bin/settrans -acfgp /servers/socket/1 /hurd/pflocal
++/bin/settrans -acfgp /proc /hurd/procfs
++
+ # Setup crucial devices
+ cd /dev
+-/bin/sh ./MAKEDEV std ptyp ptyq
++/bin/sh ./MAKEDEV -k std ptyp ptyq null vcs fd tty{1..6} hd{0..3}{,s{1..4}} console
++
++# Set up more translators for Guix system boot
++/bin/settrans -acfgp /dev/vcs /hurd/console
+ 
+ set +v
+ 
+@@ -43,6 +50,8 @@ set +v
+ #   esac
+ # fi
+ 
++rm -f /SETUP
++
+ echo 'Hit ^C now for shell prompt or RET to reboot'
+ read response
+ sync
+-- 
+2.20.1
+

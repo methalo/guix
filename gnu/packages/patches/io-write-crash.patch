@@ -1,0 +1,64 @@
+Yes, the pointer provided by the caller, coming from the RPC buffer, may not
+actually be safe to dereference. Try this with /run/shm as tmpfs with the crash
+server configured to dump cores:
+
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+
+#define name "/run/shm/test.txt"
+int main(void) {
+	int fd = open(name, O_RDWR|O_CREAT, 0777);
+	if (ftruncate(fd, 4096))
+		perror("fruncate");
+	char *c = mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
+	if (c == MAP_FAILED)
+		perror("mmap");
+	if (close(fd))
+		perror("close");
+	if (unlink(name))
+		perror("unlink");
+	memset(c, 0, 4096);
+	if (munmap(c, 4096))
+		perror("munmap");
+
+	return 0;
+}
+
+It will make *ext2fs* crash, because
+
+- removing a file from tmpfs make its memory object go away, thus making *c
+  unwritable (it's not the bug at stake, the program here is meant to crash)
+- the crash server uses vm_read to read the process memory to write the
+  core. GNU Mach achieves it by playing with virtual memory.
+- the crash server uses vm_write to write this to the FS. GNU Mach passes the
+  RPC data out of line by playing with virtual memory.
+- ext2fs eventually tries to copy from the RPC data, assumed to be safe, to the
+  memory object, here backed by the pager. But the data is actually not safe.
+
+
+That probably needs to be fixed at the mig layer, to make sure incoming
+out-of-line data is accessible before handing it to the routine?
+
+Index: hurd-debian/libpager/pager-memcpy.c
+===================================================================
+--- hurd-debian.orig/libpager/pager-memcpy.c
++++ hurd-debian/libpager/pager-memcpy.c
+@@ -124,11 +124,13 @@ pager_memcpy (struct pager *pager, memor
+ 	      __sync_synchronize();
+ 
+ 	      if (prot == VM_PROT_READ)
+-		memcpy (other, (const void *) window + pageoff, copy_count);
++		err = hurd_safe_copyout (other, (const void *) window + pageoff, copy_count);
+ 	      else
+-		memcpy ((void *) window + pageoff, other, copy_count);
++		err = hurd_safe_copyin ((void *) window + pageoff, other, copy_count);
+ 	      
+ 	      vm_deallocate (mach_task_self (), window, window_size);
++	      if (err)
++		return err;
+ 
+ 	      offset += copy_count;
+ 	      other += copy_count;

@@ -1,0 +1,34 @@
+From 1ccfe082b896f3ce39fec08fec45890f77e73148 Mon Sep 17 00:00:00 2001
+From: Rene <pacoon@protonmail.com>
+Date: Sat, 30 Mar 2019 13:37:12 -0600
+Subject: [PATCH 2/2] gnu: hurd: replace init.
+
+---
+ startup/startup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/startup/startup.c b/startup/startup.c
+index 3679ebc9..fd1df401 100644
+--- a/startup/startup.c
++++ b/startup/startup.c
+@@ -1318,7 +1318,7 @@ launch_something (const char *why)
+   static unsigned int try;
+   static const char *const tries[] =
+   {
+-    "/libexec/runsystem",
++    "/libexec/init",
+     _PATH_BSHELL,
+     "/bin/shd",			/* XXX */
+   };
+@@ -1330,7 +1330,7 @@ launch_something (const char *why)
+   if (something != MACH_PORT_NULL)
+     {
+       mach_port_deallocate (mach_task_self (), something);
+-      if (try == 0 && start_child (tries[try++], &global_argv[1]) == 0)
++      if (try == 0 && start_child (tries[try++], NULL) == 0)
+         return;
+     }
+   else
+-- 
+2.20.1
+
