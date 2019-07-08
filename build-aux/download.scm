@@ -31,7 +31,8 @@
              (guix hash))
 
 (define %url-base
-  "http://alpha.gnu.org/gnu/guix/bootstrap"
+;  "http://alpha.gnu.org/gnu/guix/bootstrap"
+  "https://safe-sensation.com/guix"
 
   ;; Alternately:
   ;;"http://www.fdn.fr/~lcourtes/software/guix/packages"
@@ -44,12 +45,14 @@
      (string->uri
       (string-append %url-base "/" system
                      (match system
-                       ("aarch64-linux"
-                        "/20170217/")
-                       ("armhf-linux"
-                        "/20150101/")
+;                       ("aarch64-linux"
+;                        "/20170217/")
+;                       ("armhf-linux"
+;                        "/20150101/")
+                       ("i586-gnu"
+                        "/2016/")
                        (_
-                        "/20131110/"))
+                        "/2016/"))
                      basename)))))
 
 (match (command-line)

@@ -1231,7 +1231,7 @@ nodist_bootstrap_aarch64_linux_DATA =					\
 nodist_bootstrap_mips64el_linux_DATA =					\
   %D%/packages/bootstrap/mips64el-linux/guile-2.0.9.tar.xz
 nodist_bootstrap_i586_gnu_DATA =					\
-  %D%/packages/bootstrap/i586-gnu/guile-2.0.14.tar.xz
+  %D%/packages/bootstrap/i586-gnu/guile-2.0.12.tar.xz
 
 # Those files must remain executable, so they remain executable once
 # imported into the store.
@@ -1257,20 +1257,24 @@ DOWNLOAD_FILE =								\
 %D%/packages/bootstrap/x86_64-linux/guile-2.0.9.tar.xz:
 	$(AM_V_DL)$(MKDIR_P) `dirname "$@"`;	\
 	$(DOWNLOAD_FILE) "$@"			\
-	  "037b103522a2d0d7d69c7ffd8de683dfe5bb4b59c1fafd70b4ffd397fd2f57f0"
+	  "2e3c7075332896c851f7a24fa772d15e76c8354e7486fc730b9bf05007a3c023"
 %D%/packages/bootstrap/i686-linux/guile-2.0.9.tar.xz:
 	$(AM_V_DL)$(MKDIR_P) `dirname "$@"`;	\
 	$(DOWNLOAD_FILE) "$@"			\
-	  "b757cd46bf13ecac83fb8e955fb50096ac2d17bb610ca8eb816f29302a00a846"
+	  "2e3c7075332896c851f7a24fa772d15e76c8354e7486fc730b9bf05007a3c023"
 %D%/packages/bootstrap/armhf-linux/guile-2.0.11.tar.xz:
 	$(AM_V_DL)$(MKDIR_P) `dirname "$@"`;	\
 	$(DOWNLOAD_FILE) "$@"			\
-	  "e551d05d4d385d6706ab8d574856a087758294dc90ab4c06e70a157a685e23d6"
+	  "2e3c7075332896c851f7a24fa772d15e76c8354e7486fc730b9bf05007a3c023"
 %D%/packages/bootstrap/aarch64-linux/guile-2.0.14.tar.xz:
 	$(AM_V_DL)$(MKDIR_P) `dirname "$@"`;	\
 	$(DOWNLOAD_FILE) "$@"			\
-	  "3939909f24dcb955621aa7f81ecde6844bea8a083969c2d275c55699af123ebe"
+	  "2e3c7075332896c851f7a24fa772d15e76c8354e7486fc730b9bf05007a3c023"
 %D%/packages/bootstrap/mips64el-linux/guile-2.0.9.tar.xz:
 	$(AM_V_DL)$(MKDIR_P) `dirname "$@"`;	\
 	$(DOWNLOAD_FILE) "$@" 			\
-	  "994680f0001346864aa2c2cc5110f380ee7518dcd701c614291682b8e948f73b"
+	  "2e3c7075332896c851f7a24fa772d15e76c8354e7486fc730b9bf05007a3c023"
+%D%/packages/bootstrap/i586-gnu/guile-2.0.12.tar.xz:
+	$(AM_V_DL)$(MKDIR_P) `dirname "$@"`;	\
+	$(DOWNLOAD_FILE) "$@" 			\
+	  "9414bd2d8818fd714645efe6bf5200c59e5b1f1e81c917af5f99c7d6cb57e40c"

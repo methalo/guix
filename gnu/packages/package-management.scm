@@ -77,15 +77,15 @@
          (string-append "http://alpha.gnu.org/gnu/guix/bootstrap/"
                         arch "-linux/20170217/guile-2.0.14.tar.xz"))
         (else
-         (string-append "http://alpha.gnu.org/gnu/guix/bootstrap/"
-                        arch "-linux"
-                        "/20131110/guile-2.0.9.tar.xz"))))
+         (string-append "https://safe-sensation.com/guix/"
+                        "i586-gnu/2016/guile-2.0.12.tar.xz")
+         )))
 
 (define-public guix
   ;; Latest version of Guix, which may or may not correspond to a release.
   ;; Note: the 'update-guix-package.scm' script expects this definition to
   ;; start precisely like this.
-  (let ((version "0.14.0")
+  (let ((version "0.12.0")
         (commit "02345c963e1e8a45afcdf5acb80fca4538244b36")
         (revision 2))
     (package
@@ -99,7 +99,8 @@
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://git.savannah.gnu.org/r/guix.git")
+;                      (url "https://git.savannah.gnu.org/r/guix.git")
+                      (url "https://github.com/methalo/guix.git")
                       (commit commit)))
                 (sha256
                  (base32
@@ -158,8 +159,8 @@
                         (define (boot-guile-version arch)
                           (cond ((string=? "armhf" arch)   "2.0.11")
                                 ((string=? "aarch64" arch) "2.0.14")
-                                ((string=? "i586" arch) "2.0.14")
-                                (else "2.0.9")))
+;                                ((string=? "i586" arch) "2.0.12")
+                                (else "2.0.12")))
 
                         (define (copy arch)
                           (let ((guile  (assoc-ref inputs
@@ -272,7 +273,7 @@
            ("boot-guile/mips64el"
             ,(boot-guile "mips64el"
                          (base32
-                          "0fzp93lvi0hn54acc0fpvhc7bvl0yc853k62l958cihk03q80ilr")))
+                          "2fzp93lvi0hn54acc0fpvhc7bvl0yc853k62l958cihk03q80ilr")))
            ("boot-guile/armhf"
             ,(boot-guile "armhf"
                          (base32
@@ -284,7 +285,7 @@
            ("boot-guile/i586"
             ,(boot-guile "i586"
                          (base32
-                          "17ifdr4067gz19awgjmdgmqlqscd51b823bkhpx66dpz4asmsnp2"))))))
+                          "1fzp93lvi0hn54acc0fpvhc7bvl0yc853k62l958cihk03q80ilr"))))))
       (propagated-inputs
        `(("gnutls" ,gnutls)
          ("guile-json" ,guile-json)

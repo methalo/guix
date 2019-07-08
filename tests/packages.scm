@@ -383,7 +383,7 @@
                                             ("aarch64-linux"
                                              "guile-2.0.14.tar.xz")
                                             (_
-                                             "guile-2.0.9.tar.xz"))
+                                             "guile-2.0.12.tar.xz"))
                                           (%current-system)))
          (sha256 (call-with-input-file file port-sha256))
          (fetch  (lambda* (url hash-algo hash
