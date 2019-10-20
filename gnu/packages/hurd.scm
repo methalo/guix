@@ -29,6 +29,7 @@
   #:use-module (gnu packages flex)
   #:use-module (gnu packages bison)
   #:use-module (gnu packages perl)
+  #:use-module (gnu packages texinfo)
   #:use-module (gnu packages base)
   #:use-module (guix git-download)
   #:export (hurd-triplet?
@@ -45,7 +46,7 @@ GNU/Hurd."
       (string-suffix? (%current-system) "-gnu")))
 
 (define (gnumach-source-url version)
-  (string-append "mirror://gnu/gnumach/gnumach-"
+  (string-append "https://safe-sensation.com/guix/i586-gnu/2019/gnumach-"
                  version ".tar.gz"))
 
 (define (hurd-source-url version)
@@ -66,24 +67,25 @@ GNU/Hurd."
       (uri (gnumach-source-url version))
       (sha256
        (base32
-        "02hygsfpd2dljl5lg1vjjg9pizi9jyxd4aiiqzjshz6jax62jm9f"))
-      (patches (list (origin
-                       ;; This patch adds <mach/vm_wire.h>, which defines the
-                       ;; VM_WIRE_* constants needed by glibc 2.28.
-                       (method url-fetch)
-                       (uri (patch-url "gnumach" "2b0f19f602e08fd9d37268233b962674fd592634"))
-                       (sha256
-                        (base32
-                         "01iajnwsmka0w9hwjkxxijc4xfhwqbvlkw1w8n71hpnhfixd0y28"))
-                       (file-name "gnumach-vm-wire-header.patch"))))
-      (modules '((guix build utils)))
-      (snippet
-       '(begin
-          ;; Actually install vm_wire.h.
-          (substitute* "Makefile.in"
-            (("^include_mach_HEADERS =")
-             "include_mach_HEADERS = include/mach/vm_wire.h"))
-          #t))))
+        "0yjli3lbvh4jlbv60fvi3qzb4zlkr602l1wqb25lcgpcpha48iv1"))
+;      (patches (list (origin
+;                       ;; This patch adds <mach/vm_wire.h>, which defines the
+;                       ;; VM_WIRE_* constants needed by glibc 2.28.
+;                       (method url-fetch)
+;                       (uri (patch-url "gnumach" "2b0f19f602e08fd9d37268233b962674fd592634"))
+;                       (sha256
+;                        (base32
+;                         "01iajnwsmka0w9hwjkxxijc4xfhwqbvlkw1w8n71hpnhfixd0y28"))
+;                       (file-name "gnumach-vm-wire-header.patch"))))
+;      (modules '((guix build utils)))
+;      (snippet
+;       '(begin
+;          ;; Actually install vm_wire.h.
+;          (substitute* "Makefile.in"
+;            (("^include_mach_HEADERS =")
+;             "include_mach_HEADERS = include/mach/vm_wire.h"))
+;          #t))
+      ))
     (build-system gnu-build-system)
     (arguments
      `(#:phases
@@ -102,6 +104,8 @@ GNU/Hurd."
             '(#:configure-flags '("--build=i586-pc-gnu")))
 
       #:tests? #f))
+    (native-inputs
+     `(("makeinfo" ,texinfo)))
     (home-page "https://www.gnu.org/software/hurd/microkernel/mach/gnumach.html")
     (synopsis "GNU Mach kernel headers")
     (description
@@ -271,7 +275,7 @@ Hurd-minimal package which are needed for both glibc and GCC.")
               (uri (gnumach-source-url version))
               (sha256
                (base32
-                "02hygsfpd2dljl5lg1vjjg9pizi9jyxd4aiiqzjshz6jax62jm9f"))))
+                "0yjli3lbvh4jlbv60fvi3qzb4zlkr602l1wqb25lcgpcpha48iv1"))))
     (build-system gnu-build-system)
     (arguments
      `(#:phases (modify-phases %standard-phases
@@ -284,7 +288,8 @@ Hurd-minimal package which are needed for both glibc and GCC.")
                         #t))))))
     (native-inputs
      `(("mig" ,mig)
-       ("perl" ,perl)))
+       ("perl" ,perl)
+       ("makeinfo" ,texinfo)))
     (supported-systems (cons "i686-linux" %hurd-systems))
     (home-page
      "https://www.gnu.org/software/hurd/microkernel/mach/gnumach.html")
