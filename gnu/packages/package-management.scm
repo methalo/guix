@@ -76,6 +76,9 @@
         ((string=? "aarch64" arch)
          (string-append "http://alpha.gnu.org/gnu/guix/bootstrap/"
                         arch "-linux/20170217/guile-2.0.14.tar.xz"))
+        ((string=? "i586" arch)
+         (string-append "https://safe-sensation.com/guix/i586-gnu/"
+                        "2016/guile-2.0.12.tar.xz"))
         (else
          (string-append "https://safe-sensation.com/guix/"
                         "i586-gnu/2016/guile-2.0.12.tar.xz")
@@ -86,7 +89,7 @@
   ;; Note: the 'update-guix-package.scm' script expects this definition to
   ;; start precisely like this.
   (let ((version "0.12.0")
-        (commit "02345c963e1e8a45afcdf5acb80fca4538244b36")
+        (commit "8a6a88879b557296ffb8e945c9d310e53ab5c3fd")
         (revision 2))
     (package
       (name "guix")
